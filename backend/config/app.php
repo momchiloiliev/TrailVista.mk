@@ -1,5 +1,9 @@
 <?php
 
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Facade;
+
 return [
 
     /*
@@ -13,7 +17,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'TrailVista'),
 
     /*
     |--------------------------------------------------------------------------
@@ -122,5 +126,26 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+
+
+
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        /*
+         * Package Service Providers...
+         */
+
+        /*
+         * Application Service Providers...
+         */
+        App\Providers\AppServiceProvider::class,
+        // App\Providers\AuthServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
+        // App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
+        App\Providers\FortifyServiceProvider::class
+    ])->toArray(),
+
+
 
 ];
