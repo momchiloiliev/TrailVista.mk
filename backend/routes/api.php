@@ -12,7 +12,6 @@ Route::get('/status', function () {
 Route::get('/posts', [PostController::class, 'index']);   // View all posts
 Route::get('/posts/{id}', [PostController::class, 'show']); // View a specific post
 
-
 // Protected routes (Require authentication)
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
