@@ -1,0 +1,140 @@
+#homepage-container {
+    margin-bottom: 1rem;
+
+    .logo-container {
+        background-color: #88d9b2;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 3rem 0;
+        height: auto; /* Adjust height to fit content */
+    }
+
+    .title {
+        font-family: 'Manrope-Medium', serif !important;
+        color: #103d27 !important;
+        font-weight: bold;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 40px;
+        z-index: 1;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .text-content {
+        padding-left: 10%;
+    }
+
+    .home-title {
+        font-family: 'Manrope-Bold', serif !important;
+        color: #103d27 !important;
+        font-weight: bold;
+        text-align: left;
+        font-size: 3rem;
+        z-index: 1;
+        margin-top: 0; /* Removes extra space above */
+    }
+
+    .home-text {
+        font-family: 'Manrope-Regular', serif !important;
+        color: #103d27;
+        text-align: left;
+        font-size: 2.5rem;
+        line-height: 3rem;
+        z-index: 1;
+        margin-top: 30px;
+    }
+
+    .image-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .home-page-logo {
+        width: 100%; /* Responsive width */
+        height: auto;
+        max-width: 500px; /* Limit the maximum width */
+    }
+
+    .infocards-container {
+        display: flex;
+        flex-direction: row;
+        gap: 4rem;
+        justify-content: center;
+        width: 100%;
+        margin: 5rem 0;
+    }
+
+    .infocard {
+        background-color: rgb(212, 212, 212);
+        padding: 3rem;
+        border-radius: 1rem;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 500px;
+        height: 300px;
+
+        .infocard-icon {
+            max-height: 6rem;
+            margin-bottom: 1rem;
+        }
+
+        .infocard-title {
+            font-family: 'Manrope-Bold', serif !important;
+            color: black;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .infocard-text {
+            font-family: 'Manrope-Regular', serif !important;
+            color: black;
+            font-size: 1.5rem;
+            line-height: 2rem;
+        }
+    }
+
+    .ai-info-container {
+        background-color: #27A166;
+        width: 100%;
+        height: 20rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 0;
+        margin-bottom: 70px;
+    }
+
+    .ai-info-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 90%;
+        max-width: 110rem;
+    }
+
+    .robot-image {
+        max-height: 100%;
+        width: auto;
+    }
+
+    .ai-text {
+        font-family: 'Manrope-Medium', serif !important;
+        color: black;
+        width: 70rem;
+        font-size: 2rem;
+        line-height: 2rem;
+        margin-left: 2rem;
+    }
+}
