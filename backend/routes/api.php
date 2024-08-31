@@ -2,6 +2,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Resources\UserResource;
+
 // Public routes
 Route::get('/status', function () {
     return response()->json(['status' => 'API is working!'], 200);
@@ -23,5 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // Example route to fetch user-specific data
-    Route::get('/user/data', 'UserController@getUserData');
+    Route::get('/user/data', function (Request $request) {
+        return new UserResource($request->user());
+    });
 });
