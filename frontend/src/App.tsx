@@ -2,9 +2,10 @@ import React from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import {MainLayout} from "./components/main-layout/MainLayout";
 import {Home} from "./pages/home-page/Home";
+import BrowseTrails from './pages/browse-trails/BrowseTrails';
+import TrailPlanner from './pages/trail-planner/TrailPlanner';
 // import Login from "./pages/Login";
 // import RegisterPage from "./pages/RegisterPage";
-// import {SearchRoute} from "./pages/search-route-page/SearchRoute";
 // import ProfilePage from './pages/ProfilePage';
 // import ProfileEditPage from './pages/ProfileEditPage';
 // import {RoutePage} from "./pages/route-page/RoutePage";
@@ -16,8 +17,8 @@ const App: React.FC = () => {
                 <Routes>
                     <Route path="/" element={<MainLayout/>}>
                         <Route index element={<Home/>}/>
-                        {/* <Route path="routes" element={<Routes/>}/> */}
-                        {/* <Route path="route-planner" element={<RoutePlanner/>}/>
+                        <Route path="browse-trails" element={<BrowseTrails/>}/>
+                        <Route path="trail-planner" element={<TrailPlanner/>}/>
                         {/* <Route path="features" element={<Features/>}/>
 
                         <Route path="route/:id" element={<RoutePage/>}/> */}

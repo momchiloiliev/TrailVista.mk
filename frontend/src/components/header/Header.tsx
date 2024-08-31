@@ -18,8 +18,8 @@ export const Header = () => {
     const isMobile = useMediaQuery('(max-width:1200px)');
 
     const headerElements = [
-        { text: 'Routes', href: '/routes' },
-        { text: 'Route Planner', href: '/route-planner' },
+        { text: 'Browse Trails', href: '/browse-trails' },
+        { text: 'Trail Planner ', href: '/trail-planner' },
         { text: 'Features', href: '/features' }
     ];
 

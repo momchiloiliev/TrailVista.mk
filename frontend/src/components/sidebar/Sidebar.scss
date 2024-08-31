@@ -1,0 +1,43 @@
+.trail-sidebar {
+    width: 600px;
+    height: calc(100vh - 160px); /* 100vh minus the combined height of header and footer */
+    background-color: #2d4a22;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: relative; /* Relative positioning to stay within the content area */
+    top: 0;
+
+    .search-container {
+        margin-bottom: 1rem;
+        background-color: white;
+        border-radius: 10px;
+    }
+
+    .trail-list {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 0;
+    }
+
+    .trail-item {
+        background-color: #3d6533;
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+        padding: 1rem;
+
+        &:hover {
+            background-color: #4f7b42;
+        }
+
+        .MuiListItemText-primary {
+            color: white;
+        }
+
+        .MuiListItemText-secondary {
+            color: #b8d1b8;
+        }
+    }
+}

@@ -1,0 +1,67 @@
+.browse-trails-container-tp {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 20px; /* Space between the form and the map */
+    height: 700px; /* Full height of the viewport */
+    padding: 40px; /* Adjust as needed */
+}
+
+.form-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    background-color: #9dd6a2;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.trail-form {
+    width: 100%;
+}
+
+.trail-form h2 {
+    margin-bottom: 20px;
+}
+
+.trail-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.trail-form input[type="text"],
+.trail-form textarea,
+.trail-form select,
+.trail-form input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.trail-form button {
+    padding: 10px 20px;
+    background-color: #27A166;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.trail-form button:hover {
+    background-color: #27A166;
+}
+
+.map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
