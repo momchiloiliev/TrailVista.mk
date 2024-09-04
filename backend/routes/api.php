@@ -11,6 +11,7 @@ Route::get('/status', function () {
 
 Route::get('/posts', [PostController::class, 'index']);   // View all posts
 Route::get('/posts/{id}', [PostController::class, 'show']); // View a specific post
+Route::post('/posts', [PostController::class, 'store']);
 
 // Protected routes (Require authentication)
 Route::middleware('auth:sanctum')->group(function () {
@@ -18,7 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-    Route::post('/posts', [PostController::class, 'store']);  // Add a new post
+    // Route::post('/posts', [PostController::class, 'store']);  // Add a new post
     Route::put('/posts/{id}', [PostController::class, 'update']);  // Edit a post
     Route::delete('/posts/{id}', [PostController::class, 'destroy']);  // Delete a post
 

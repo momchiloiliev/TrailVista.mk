@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null'); // The user who created the post (nullable for anonymous)
+            $table->string('author_name')->default('Anonymous'); // Will store the author name for guests
+            $table->string('title');
             $table->string('description')->nullable();  // Optional description field
             $table->string('file_path');  // Path to the GPX file
             $table->enum('moderation_status', ['easy', 'medium', 'hard', 'extreme'])->default('medium');
             $table->enum('sport', ['cycling', 'running', 'hiking', 'mountain-biking']);
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

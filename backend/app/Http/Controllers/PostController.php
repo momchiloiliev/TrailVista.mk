@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\PostResource;
+use Illuminate\Support\Facades\Log;
+
+use Illuminate\Support\Facades\Auth;
+
 
 class PostController extends Controller
 {
@@ -26,21 +30,35 @@ class PostController extends Controller
     // Store a new post
     public function store(Request $request)
     {
+        Log::info('Creating a new post', ['request_data' => $request->all()]);
+
         $request->validate([
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'file' => 'required|file|mimes:xml,gpx',
+            'file_path' => 'required|file|mimes:xml,gpx',
             'sport' => 'required|in:biking,running,hiking',
+            'moderation_status' => 'nullable|in:easy,medium,hard,extreme',
         ]);
 
-        $path = $request->file('file')->store('gpx_files');
+        $path = $request->file('file_path')->store('gpx_files');
+
+        if ($request->hasFile('file_path')) {
+            $file = $request->file('file_path');
+            Log::info('File uploaded:', ['file_name' => $file->getClientOriginalName(), 'file_size' => $file->getSize()]);
+            $path = $file->store('gpx_files', 'public');
+        } else {
+            Log::error('File not provided');
+            return response()->json(['error' => 'File not provided'], 400);
+        }
 
         $post = Post::create([
-            'name' => $request->name,
-            'description' => $request->description,
+            'user_id' => Auth::check() ? Auth::id() : null,
+            'author_name' => Auth::check() ? Auth::user()->name : 'Anonymous',
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'moderation_status' => $request->input('moderation_status'),
+            'sport' => $request->input('sport'),
             'file_path' => $path,
-            'sport' => $request->sport,
-            'user_id' => $request->user()->id,
         ]);
 
         return response()->json($post, 201);
