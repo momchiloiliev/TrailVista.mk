@@ -4,10 +4,9 @@ import {MainLayout} from "./components/main-layout/MainLayout";
 import {Home} from "./pages/home-page/Home";
 import BrowseTrails from './pages/browse-trails/BrowseTrails';
 import TrailPlanner from './pages/trail-planner/TrailPlanner';
-// import Login from "./pages/Login";
-// import RegisterPage from "./pages/RegisterPage";
-// import ProfilePage from './pages/ProfilePage';
-// import ProfileEditPage from './pages/ProfileEditPage';
+import Register from './pages/register-page/Register';
+import Login from './pages/login-page/Login';
+
 // import {RoutePage} from "./pages/route-page/RoutePage";
 // import TransportCard from "./pages/transport-card-page/TransportCard";
 
@@ -28,9 +27,9 @@ const App: React.FC = () => {
                             example:
                             <Route path="list" element={<ListPage />} />
                             */}
-                            {/* <Route path="/login" element={<LoginPage />}> </Route>
-                            <Route path="/register" element={<RegisterPage />}> </Route>
-                            <Route path="/profile" element={<ProfilePage />}> </Route>
+                            <Route path="/login" element={<Login />}> </Route>
+                            <Route path="/register" element={<Register />}> </Route>
+                            {/* <Route path="/profile" element={<ProfilePage />}> </Route>
                             <Route path="/profile-edit" element={<ProfileEditPage />}> </Route> */}
 
                         </Route>
