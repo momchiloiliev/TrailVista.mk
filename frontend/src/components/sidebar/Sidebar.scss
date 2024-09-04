@@ -19,14 +19,22 @@
     .trail-list {
         flex-grow: 1;
         overflow-y: auto;
-        padding: 0;
+        padding: 5px;
+    }
+
+    .trail-card {
+        margin-top: 10px;
     }
 
     .trail-item {
-        background-color: #3d6533;
+        // background-color: #3d6533;
+        background-color: #7dcc67;
         margin-bottom: 0.5rem;
         border-radius: 8px;
         padding: 1rem;
+        display: flex;
+        flex-direction: column; /* Stack elements vertically */
+        align-items: flex-start;
 
         &:hover {
             background-color: #4f7b42;
@@ -38,6 +46,18 @@
 
         .MuiListItemText-secondary {
             color: #b8d1b8;
+        }
+
+        .trail-mod-status {
+            background-color: #8aab8f; /* Change this color as per your theme */
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            display: inline-block;
         }
     }
 }

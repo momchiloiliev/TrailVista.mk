@@ -74,12 +74,12 @@ class PostController extends Controller
     }
 
     $request->validate([
-        'name' => 'required|string|max:255',
+        'title' => 'required|string|max:255',
         'description' => 'nullable|string',
         'sport' => 'required|in:biking,running,hiking',
     ]);
 
-    $post->update($request->only(['name', 'description', 'sport']));
+    $post->update($request->only(['title', 'description', 'sport']));
 
     return response()->json($post);
 }
