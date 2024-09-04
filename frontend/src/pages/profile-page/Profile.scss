@@ -1,0 +1,74 @@
+.profile-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #fafafa;
+    height: 100vh;  // Take the full height of the viewport
+    width: 100%;    // Ensure it takes the full width
+    margin: 0;      // Remove any unwanted margins to center the content
+
+    .profile-card {
+        width: 600px;
+        height: 600px;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        .profile-info {
+            h6 {
+                font-size: 24px;
+                font-weight: bold;
+                margin: 0;
+                color: #333;
+            }
+
+            p {
+                font-size: 14px;
+                color: #777;
+            }
+        }
+    }
+
+    .profile-details {
+        margin-bottom: 30px;
+        padding-top: 10px;
+
+        h6 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+
+            img {
+                width: 20px;
+                margin-right: 10px;
+            }
+
+            .info-text {
+                font-size: 14px;
+                color: #555;
+            }
+        }
+    }
+
+}

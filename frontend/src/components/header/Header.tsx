@@ -61,7 +61,7 @@ export const Header = () => {
     const headerElements = [
         { text: '🏞️ Browse Trails', href: '/browse-trails' },
         { text: '🛤️ Trail Planner', href: '/trail-planner' },
-        { text: '⭐ Features', href: '/features' }
+        // { text: '⭐ Features', href: '/features' }
     ];
 
     return (
@@ -73,15 +73,15 @@ export const Header = () => {
             </Grid>
             {isMobile ? (
                 <>
-                    <Grid item xs={6} style={{ textAlign: 'right' }}>
+                    <Grid item xs={6} style={{ textAlign: 'right', paddingLeft: '100px' }}>
                         <IconButton onClick={toggleDrawer(true)} size="large">
-                            <MenuIcon style={{ fontSize: '1.5rem' }} />
+                            <MenuIcon style={{ fontSize: '2rem' }} />
                         </IconButton>
                     </Grid>
                     <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
                         <List onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)} style={{ width: 250 }}>
                             {headerElements.map((headerElement, index) => (
-                                <ListItem key={index} style={{ padding: '12px 16px' }}>
+                                <ListItem key={index} style={{ padding: '35px 16px' }}>
                                     <Link href={headerElement.href} style={{ textDecoration: 'none', color: 'inherit' }}>
                                         <Typography variant='h6'>{headerElement.text}</Typography>
                                     </Link>
@@ -89,7 +89,7 @@ export const Header = () => {
                             ))}
                             {isAuth ? (
                                 <>
-                                    <ListItem style={{ padding: '12px 16px' }}>
+                                    <ListItem style={{ padding: '12px 16px',  }}>
                                         <Link href="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>Profile</Link>
                                     </ListItem>
                                     <ListItem style={{ padding: '12px 16px' }} onClick={handleLogout}>
@@ -120,15 +120,12 @@ export const Header = () => {
                     ))}
                     {isAuth ? (
                         <Grid item xs={12} lg={1} className='header-element-container' style={{ textAlign: 'right' }}>
-                            <IconButton onClick={handleMenuClick} size="large">
+                            <IconButton onClick={handleMenuClick} size="large" className='header-icon'>
                                 <AccountCircleIcon style={{ fontSize: '3rem' }} />
                             </IconButton>
                             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
                                 <MenuItem onClick={handleMenuClose}>
                                     <Link href="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>Profile</Link>
-                                </MenuItem>
-                                <MenuItem onClick={handleMenuClose}>
-                                    <Link href="/inbox" style={{ textDecoration: 'none', color: 'inherit' }}>Inbox</Link>
                                 </MenuItem>
                                 <MenuItem onClick={() => { handleMenuClose(); handleLogout(); }}>
                                     Logout
