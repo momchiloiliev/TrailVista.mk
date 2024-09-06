@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, List, ListItem, ListItemText, IconButton, Typography, TextField, Card, CardContent } from '@mui/material';
+import { Box, List, ListItem, IconButton, TextField, Card, CardContent } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
 import './Sidebar.scss';
@@ -14,74 +14,70 @@ interface Trail {
     moderation_status: string;
     sport: string;
     time: string;
-    distance: number;  // Ensure distance is a number
-    elevation: number; // Ensure elevation is a number
+    distance: number;
+    elevation: number;
 }
 
-const Sidebar: React.FC = () => {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [trails, setTrails] = useState<Trail[]>([]); // State to hold the list of trails
+interface SidebarProps {
+    onTrailSelect: (trailId: number) => void; // Function to handle trail selection by ID
+}
 
-    // Fetch trails from the backend
+const Sidebar: React.FC<SidebarProps> = ({ onTrailSelect }) => {
+    const [searchTerm, setSearchTerm] = useState("");
+    const [trails, setTrails] = useState<Trail[]>([]);
+
     useEffect(() => {
         const fetchTrails = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/posts'); // Adjust the endpoint if needed
-
-                // Map over the array in response.data.data
+                const response = await axios.get('http://localhost:8000/api/posts');
                 setTrails(response.data.data.map((post: any) => ({
                     id: post.id,
-                    title: post.title ?? 'Unnamed Trail', // Use 'Unnamed Trail' if title is null
-                    description: post.description ?? 'No description provided', // Handle empty descriptions
+                    title: post.title ?? 'Unnamed Trail',
+                    description: post.description ?? 'No description provided',
                     moderation_status: post.moderation_status,
                     sport: post.sport,
                     time: post.time,
-                    distance: post.distance ? parseFloat(post.distance) : 0, // Convert to float if exists
-                    elevation: post.elevation ? parseFloat(post.elevation) : 0, // Convert to float if exists
+                    distance: post.distance ? parseFloat(post.distance) : 0,
+                    elevation: post.elevation ? parseFloat(post.elevation) : 0,
                 })));
             } catch (error) {
                 console.error('Error fetching trails:', error);
             }
         };
-
         fetchTrails();
     }, []);
 
-    // Function to format time from HH:MM:SS to Xh Ymin
     const formatTime = (time: string) => {
         const [hours, minutes] = time.split(':').map(Number);
         return `${hours > 0 ? `${hours}h ` : ''}${minutes}min`;
     };
 
-    // Function to format distance to x.xx km
-    const formatDistance = (distance: number) => {
-        return distance.toFixed(2); // Format distance to 2 decimal places
-    };
+    const formatDistance = (distance: number) => distance.toFixed(2);
 
-    const formatElevation = (elevation: number) => {
-        return elevation.toFixed(2); // Format elevation to 2 decimal places
-    };
+    const formatElevation = (elevation: number) => elevation.toFixed(2);
 
-    // Function to determine moderation color
     const getModerationColor = (moderationStatus: string) => {
         switch (moderationStatus) {
             case 'easy':
-                return '#7dcc67'; // Green for 'easy'
+                return '#7dcc67';
             case 'medium':
-                return 'orange';  // Orange for 'medium'
+                return 'orange';
             case 'hard':
-                return 'red';     // Red for 'hard'
+                return 'red';
             case 'extreme':
-                return 'black';   // Black for 'extreme'
+                return 'black';
             default:
-                return '#7dcc67'; // Default color
+                return '#7dcc67';
         }
     };
 
-    // Filter and sort trails based on the search term and sort alphabetically by title
     const filteredTrails = trails
         .filter(trail => trail.title.toLowerCase().includes(searchTerm.toLowerCase()))
-        .sort((a, b) => a.title.localeCompare(b.title)); // Sort by title A-Z
+        .sort((a, b) => a.title.localeCompare(b.title));
+
+    const handleTrailClick = (id: number) => {
+        onTrailSelect(id); // Pass the selected trail ID to the parent component
+    };
 
     return (
         <Box className="trail-sidebar" width={420}>
@@ -104,7 +100,12 @@ const Sidebar: React.FC = () => {
 
             <List className="trail-list">
                 {filteredTrails.map((trail) => (
-                    <Card key={trail.id} className="trail-card">
+                    <Card
+                        key={trail.id}
+                        className="trail-card"
+                        onClick={() => handleTrailClick(trail.id)} // Pass trail ID on click
+                        style={{ cursor: 'pointer' }} // Make the card look clickable
+                    >
                         <CardContent>
                             <ListItem className="trail-item">
                                 <div className="status-activity-container">
@@ -123,22 +124,13 @@ const Sidebar: React.FC = () => {
                                 </div>
                                 <div className="trail-time-distance-elevation">
                                     <div>
-                                        <strong><FiClock /></strong>
-                                    </div>
-                                    <div className="icons">
-                                        {formatTime(trail.time)}
+                                        <strong><FiClock /></strong> {formatTime(trail.time)}
                                     </div>
                                     <div>
-                                        <strong><GiPathDistance /> </strong>
-                                    </div>
-                                    <div className="icons">
-                                        {formatDistance(trail.distance)} km
+                                        <strong><GiPathDistance /> </strong> {formatDistance(trail.distance)} km
                                     </div>
                                     <div>
-                                        <strong><GoArrowUpRight /> </strong>
-                                    </div>
-                                    <div className="icons">
-                                        {formatElevation(trail.elevation)} m
+                                        <strong><GoArrowUpRight /> </strong> {formatElevation(trail.elevation)} m
                                     </div>
                                 </div>
                             </ListItem>
