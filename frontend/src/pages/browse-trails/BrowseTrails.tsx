@@ -23,6 +23,12 @@ interface Trail {
     file_path: string;
 }
 
+// Preset list of bold colors to ensure high visibility
+const boldColors = [
+    '#FF0000', '#00FF00', '#0000FF', '#FFA500', '#800080', '#00FFFF', '#FFC0CB', '#FFFF00', '#8B4513', '#FFD700',
+    '#008000', '#FF6347', '#4682B4', '#DC143C', '#FF4500', '#9ACD32', '#FF1493', '#7B68EE', '#7FFF00', '#00FA9A'
+];
+
 const BrowseTrails: React.FC = () => {
     const [trails, setTrails] = useState<Trail[]>([]);
     const [trailPaths, setTrailPaths] = useState<any[]>([]);
@@ -41,12 +47,22 @@ const BrowseTrails: React.FC = () => {
 
         const fetchGPXFiles = async (trailsData: Trail[]) => {
             const paths = await Promise.all(
-                trailsData.map(async (trail) => {
+                trailsData.map(async (trail, index) => {
                     try {
                         const res = await axios.get(`http://localhost:8000/storage/${trail.file_path}`, { responseType: 'text' });
                         const gpxData = new window.DOMParser().parseFromString(res.data, 'application/xml');
                         const coords = parseGPX(gpxData);
-                        return { id: trail.id, coords, title: trail.title, description: trail.description };
+                        
+                        // Assign a distinct color from the list or generate a random one
+                        const color = index < boldColors.length ? boldColors[index] : getRandomColor();
+                        
+                        return { 
+                            id: trail.id, 
+                            coords, 
+                            title: trail.title, 
+                            description: trail.description, 
+                            color 
+                        };
                     } catch (error) {
                         console.error('Error fetching GPX file:', error);
                         return null;
@@ -71,6 +87,16 @@ const BrowseTrails: React.FC = () => {
         return coordinates;
     };
 
+    // Generate a random bold color if we run out of preset colors
+    const getRandomColor = () => {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    };
+
     return (
         <div className="browse-trails-container">
             <Sidebar />
@@ -85,10 +111,15 @@ const BrowseTrails: React.FC = () => {
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
 
-                    {/* Render each trail path */}
+                    {/* Render each trail path with bold, distinct colors */}
                     {trailPaths.map((trail) => (
                         <React.Fragment key={trail.id}>
-                            <Polyline positions={trail.coords} color="blue" weight={3} />
+                            <Polyline
+                                positions={trail.coords}
+                                color={trail.color}
+                                weight={5}  // Increase line thickness for better visibility
+                                opacity={0.9}  // High opacity for strong color contrast
+                            />
                             <Marker position={trail.coords[0]}>
                                 <Popup>
                                     <strong>{trail.title}</strong>
