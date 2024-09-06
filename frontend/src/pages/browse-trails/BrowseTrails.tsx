@@ -27,14 +27,13 @@ const BrowseTrails: React.FC = () => {
     const [trails, setTrails] = useState<Trail[]>([]);
     const [trailPaths, setTrailPaths] = useState<any[]>([]);
 
-    // Fetch trails from the backend
     useEffect(() => {
         const fetchTrails = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/posts'); // Adjust the endpoint if needed
+                const response = await axios.get('http://localhost:8000/api/posts'); 
                 const trailsData = response.data.data;
-                setTrails(trailsData); // Store trails
-                fetchGPXFiles(trailsData); // Parse and extract GPX data
+                setTrails(trailsData); 
+                fetchGPXFiles(trailsData); 
             } catch (error) {
                 console.error('Error fetching trails:', error);
             }
@@ -54,7 +53,7 @@ const BrowseTrails: React.FC = () => {
                     }
                 })
             );
-            setTrailPaths(paths.filter((path) => path !== null)); // Filter out null results
+            setTrailPaths(paths.filter((path) => path !== null)); 
         };
 
         fetchTrails();

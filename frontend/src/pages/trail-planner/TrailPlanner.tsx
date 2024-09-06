@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import React, { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './TrailPlanner.scss';
@@ -16,17 +16,65 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow,
 });
 
+// Component to recenter the map to the marker position
+const RecenterMap = ({ markerPosition }: { markerPosition: [number, number] | null }) => {
+    const map = useMap();
+    useEffect(() => {
+        if (markerPosition) {
+            map.setView(markerPosition, map.getZoom(), { animate: true });
+        }
+    }, [markerPosition, map]);
+
+    return null;
+};
+
 const TrailPlanner: React.FC = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [activity, setActivity] = useState('hiking');
     const [moderation, setModeration] = useState('easy');
     const [gpxFile, setGpxFile] = useState<File | null>(null);
+    const [gpxCoordinates, setGpxCoordinates] = useState<[number, number][]>([]); // Store coordinates
+    const [markerPosition, setMarkerPosition] = useState<[number, number] | null>(null); // Store marker position
+
+    const defaultCenter: [number, number] = [41.14524580049242, 22.498578357610327]; // Default center
+
+    // Function to parse the GPX file and extract coordinates
+    const parseGpxFile = (file: File) => {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const text = e.target?.result as string;
+
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(text, "application/xml");
+
+            const trkpts = xmlDoc.getElementsByTagName('trkpt');
+            const coordinates: [number, number][] = [];
+
+            for (let i = 0; i < trkpts.length; i++) {
+                const lat = parseFloat(trkpts[i].getAttribute('lat') || '0');
+                const lon = parseFloat(trkpts[i].getAttribute('lon') || '0');
+                coordinates.push([lat, lon]);
+            }
+
+            setGpxCoordinates(coordinates); 
+
+            if (coordinates.length > 0) {
+                const middleIndex = Math.floor(coordinates.length / 2);
+                setMarkerPosition(coordinates[0]); // Set marker on the start of the route
+            }
+        };
+
+        reader.readAsText(file);
+    };
 
     // Handle file input change
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
-            setGpxFile(event.target.files[0]);
+            const file = event.target.files[0];
+            setGpxFile(file);
+            parseGpxFile(file); 
         }
     };
 
@@ -41,7 +89,7 @@ const TrailPlanner: React.FC = () => {
         formData.append('moderation_status', moderation);
 
         if (gpxFile) {
-            formData.append('file_path', gpxFile); // Ensure that the file is sent with the correct field name
+            formData.append('file_path', gpxFile); 
         }
 
         try {
@@ -126,15 +174,27 @@ const TrailPlanner: React.FC = () => {
 
             <div className="map-container">
                 <MapContainer
-                    center={[41.14524580049242, 22.498578357610327]}
-                    zoom={16}
+                    center={markerPosition || defaultCenter} // Center the map on marker position if available
+                    zoom={12}
                     style={{ height: '100%', width: '100%' }}
                 >
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    <Marker position={[41.14524580049242, 22.498578357610327]} />
+
+                    {/* Recenter the map when markerPosition changes */}
+                    <RecenterMap markerPosition={markerPosition} />
+
+                    {/* Render GPX coordinates as a polyline */}
+                    {gpxCoordinates.length > 0 && (
+                        <Polyline positions={gpxCoordinates} color="blue" />
+                    )}
+
+                    {/* Set the marker on the GPX route */}
+                    {markerPosition && (
+                        <Marker position={markerPosition} />
+                    )}
                 </MapContainer>
             </div>
         </div>
