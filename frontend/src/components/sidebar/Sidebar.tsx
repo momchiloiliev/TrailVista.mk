@@ -124,13 +124,22 @@ const Sidebar: React.FC<SidebarProps> = ({ onTrailSelect }) => {
                                 </div>
                                 <div className="trail-time-distance-elevation">
                                     <div>
-                                        <strong><FiClock /></strong> {formatTime(trail.time)}
+                                        <strong><FiClock /></strong>
+                                    </div>
+                                    <div className='icons'>
+                                        {formatTime(trail.time)} 
                                     </div>
                                     <div>
-                                        <strong><GiPathDistance /> </strong> {formatDistance(trail.distance)} km
+                                        <strong><GiPathDistance /> </strong>
+                                    </div>
+                                    <div className='icons'>
+                                         {formatDistance(trail.distance)} km
                                     </div>
                                     <div>
-                                        <strong><GoArrowUpRight /> </strong> {formatElevation(trail.elevation)} m
+                                        <strong><GoArrowUpRight /> </strong> 
+                                    </div>
+                                    <div className='icons'>
+                                        {formatElevation(trail.elevation)} m
                                     </div>
                                 </div>
                             </ListItem>

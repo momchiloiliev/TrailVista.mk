@@ -127,8 +127,8 @@ const BrowseTrails: React.FC = () => {
             <Sidebar onTrailSelect={handleTrailSelect} />
             <div className="map-container-bt">
                 <MapContainer
-                    center={[41.14524580049242, 22.498578357610327]}
-                    zoom={12}
+                    center={[41.731362341090836, 21.79114740261746]}
+                    zoom={9}
                     style={{ height: "100%", width: "100%" }}
                 >
                     <TileLayer
