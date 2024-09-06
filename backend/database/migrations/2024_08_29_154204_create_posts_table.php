@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('description')->nullable();  // Optional description field
             $table->string('file_path');  // Path to the GPX file
             $table->enum('moderation_status', ['easy', 'medium', 'hard', 'extreme'])->default('medium');
-            $table->enum('sport', ['cycling', 'running', 'hiking', 'mountain-biking']);
+            $table->enum('sport', ['biking','running', 'hiking']);
             // $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

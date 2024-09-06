@@ -35,7 +35,7 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'file_path' => 'required|file|mimes:xml,gpx',
+            'file_path' => 'required|file|mimes:xml,gpx|max:51200',
             'sport' => 'required|in:biking,running,hiking',
             'moderation_status' => 'nullable|in:easy,medium,hard,extreme',
         ]);
