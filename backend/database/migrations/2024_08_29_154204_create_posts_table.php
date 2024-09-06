@@ -20,7 +20,12 @@ return new class extends Migration
             $table->string('file_path');  // Path to the GPX file
             $table->enum('moderation_status', ['easy', 'medium', 'hard', 'extreme'])->default('medium');
             $table->enum('sport', ['biking','running', 'hiking']);
-            // $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            
+            // New columns for elevation, distance, and time
+            $table->float('elevation')->nullable();  // Elevation gain in meters
+            $table->float('distance')->nullable();   // Distance in kilometers
+            $table->string('time')->nullable();      // Duration in H:i:s format
+
             $table->timestamps();
         });
     }
