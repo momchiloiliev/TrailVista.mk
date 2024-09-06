@@ -4,6 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './TrailPlanner.scss';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; 
 
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerIconRetina from 'leaflet/dist/images/marker-icon-2x.png';
@@ -38,6 +39,8 @@ const TrailPlanner: React.FC = () => {
     const [markerPosition, setMarkerPosition] = useState<[number, number] | null>(null); // Store marker position
 
     const defaultCenter: [number, number] = [41.14524580049242, 22.498578357610327]; // Default center
+
+    const navigate = useNavigate(); 
 
     // Function to parse the GPX file and extract coordinates
     const parseGpxFile = (file: File) => {
@@ -103,6 +106,7 @@ const TrailPlanner: React.FC = () => {
         } catch (error: any) {
             console.error('Error adding trail:', error.response?.data || error.message);
         }
+        navigate('/browse-trails');
     };
 
     return (

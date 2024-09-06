@@ -120,12 +120,13 @@ const BrowseTrails: React.FC = () => {
                                 weight={5}  // Increase line thickness for better visibility
                                 opacity={0.9}  // High opacity for strong color contrast
                             />
-                            <Marker position={trail.coords[0]}>
+                            {/* <Marker position={trail.coords[0]}>
                                 <Popup>
                                     <strong>{trail.title}</strong>
                                     <p>{trail.description}</p>
+                                    <p>See details</p>
                                 </Popup>
-                            </Marker>
+                            </Marker> */}
                         </React.Fragment>
                     ))}
                 </MapContainer>
