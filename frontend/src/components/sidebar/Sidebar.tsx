@@ -6,6 +6,7 @@ import './Sidebar.scss';
 import { FiClock } from "react-icons/fi";
 import { GiPathDistance } from "react-icons/gi";
 import { GoArrowUpRight } from "react-icons/go";
+import { useNavigate } from 'react-router-dom';
 
 interface Trail {
     id: number;
@@ -25,6 +26,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ onTrailSelect }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [trails, setTrails] = useState<Trail[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTrails = async () => {
@@ -127,20 +129,28 @@ const Sidebar: React.FC<SidebarProps> = ({ onTrailSelect }) => {
                                         <strong><FiClock /></strong>
                                     </div>
                                     <div className='icons'>
-                                        {formatTime(trail.time)} 
+                                        {formatTime(trail.time)}
                                     </div>
                                     <div>
                                         <strong><GiPathDistance /> </strong>
                                     </div>
                                     <div className='icons'>
-                                         {formatDistance(trail.distance)} km
+                                        {formatDistance(trail.distance)} km
                                     </div>
                                     <div>
-                                        <strong><GoArrowUpRight /> </strong> 
+                                        <strong><GoArrowUpRight /> </strong>
                                     </div>
                                     <div className='icons'>
                                         {formatElevation(trail.elevation)} m
                                     </div>
+                                </div>
+                                <div className='details'>
+                                    <button
+                                        className="view-post-button"
+                                        onClick={() => navigate(`/posts/${trail.id}`)} // Dynamically use post ID
+                                    >
+                                        More Details
+                                    </button>
                                 </div>
                             </ListItem>
                         </CardContent>

@@ -115,5 +115,20 @@
             margin-right: 0.3rem; /* Add a little space between the icon and text */
         }
     }
-    
+    .details{
+        display: flex;
+        justify-content: end; /* Space between each element */
+        align-items: center; /* Align icons and text in the center vertically */
+        margin-top: 5px;
+        
+        height: 40px;
+        position: relative;
+
+       .view-post-button{
+        border-radius: 8px;
+        background-color: #7dcc67;
+        padding: 4px;
+        color: black;
+       }
+    }
 }
