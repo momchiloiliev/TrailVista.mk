@@ -64,15 +64,14 @@ const BrowseTrails: React.FC = () => {
 
                         // Assign a distinct color from the list or generate a random one
                         const color = index < boldColors.length ? boldColors[index] : getRandomColor();
-
+        
                         return { 
                             id: trail.id, 
                             coords, 
                             title: trail.title, 
                             description: trail.description, 
                             color 
-                        };
-                    } catch (error) {
+                        };} catch (error) {
                         console.error('Error fetching GPX file:', error);
                         return null;
                     }

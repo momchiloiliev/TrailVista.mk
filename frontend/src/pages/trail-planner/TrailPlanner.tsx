@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerIconRetina from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import { createPost } from '../../services/api';
 
 // Configure Leaflet marker icons
 L.Icon.Default.mergeOptions({
@@ -193,12 +194,8 @@ const TrailPlanner: React.FC = () => {
 
         try {
             // Send the form data to the backend
-            const response = await axios.post('http://localhost:8000/api/posts', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            console.log('Trail added successfully:', response.data);
+            createPost(formData);
+            // console.log('Trail added successfully:', response.data);
             navigate('/browse-trails');
         } catch (error: any) {
             console.error('Error adding trail:', error.response?.data || error.message);

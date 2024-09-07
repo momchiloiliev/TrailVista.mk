@@ -104,4 +104,30 @@ export const updateUser = async (userData: FormData) => {
 };
 
 
+export const createPost = async (postData: FormData) => {
+  try {
+    await getCsrfToken();
+    const response = await api.post('/api/posts', postData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
+
+export const getGpxFile = async (filePath: string) => {
+  try {
+    const response = await api.get(`storage/${filePath}`, {
+      responseType: 'text',
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
