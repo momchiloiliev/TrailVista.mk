@@ -21,7 +21,7 @@ class PostController extends Controller
     // Show details of a specific post
     public function show($id)
     {
-        $post = Post::with('user')->findOrFail($id);
+        $post = Post::with(['user', 'comments', 'ratings', 'media'])->findOrFail($id);
         return new PostResource($post);
     }
 

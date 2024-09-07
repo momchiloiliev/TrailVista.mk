@@ -1,9 +1,12 @@
 <?php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\CommentResource;
+use App\Http\Resources\RatingResource;
+use App\Http\Resources\MediaResource;
 
 class PostResource extends JsonResource
 {
@@ -28,7 +31,9 @@ class PostResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'user' => new UserResource($this->whenLoaded('user')),
-            // Add other post attributes as needed
+            'comments' => CommentResource::collection($this->whenLoaded('comments')),
+            'ratings' => RatingResource::collection($this->whenLoaded('ratings')),
+            'media' => MediaResource::collection($this->whenLoaded('media')),
         ];
     }
 }

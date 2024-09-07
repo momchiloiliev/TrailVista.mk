@@ -13,7 +13,25 @@ class Post extends Model
 
 
     public function user()
-{
-    return $this->belongsTo(User::class);
-}
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Relationship with comments
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    // Relationship with ratings
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    // Relationship with media
+    public function media()
+    {
+        return $this->hasMany(Media::class);
+    }
 }
