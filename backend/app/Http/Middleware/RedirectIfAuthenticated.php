@@ -19,17 +19,15 @@ class RedirectIfAuthenticated
     {
         $guards = empty($guards) ? [null] : $guards;
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+    foreach ($guards as $guard) {
+        if (Auth::guard($guard)->check()) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'You are already logged in.'], 200);  // Return this if the user is already logged in
             }
-            else{
-                return response()->json([
-                    'message' => 'Unauthorized',
-                ], 401);
-            }
+            return redirect(RouteServiceProvider::HOME);  // Redirect to frontend home if not an API request
         }
+    }
 
-        return $next($request);
+    return $next($request);
     }
 }

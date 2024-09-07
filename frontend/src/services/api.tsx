@@ -28,7 +28,8 @@ export const loginUser = async (email: string, password: string, remember: boole
       password,
       remember
     });
-    return response;
+    getCurrentUser(); 
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data.message || 'An error occurred');

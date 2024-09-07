@@ -47,7 +47,6 @@ const Login: React.FC = () => {
         setError(null);
         try {
             await loginUser(email, password, rememberMe);
-            navigate('/');
         } catch (error: any) {
             console.error('Login error:', error.message);
             setError(error.message);
