@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import './register.scss';
 import { registerUser } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 
 const Register: React.FC = () => {
@@ -12,15 +13,15 @@ const Register: React.FC = () => {
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-//   const { user } = useAuth() as { user: any };
+  const { user } = useAuth();
   const navigate = useNavigate();
 
 
-    // useEffect(() => {
-    //   if (user) {
-    //       navigate('/');
-    //   }
-    // }, [user, navigate]);
+    useEffect(() => {
+      if (user) {
+          navigate('/');
+      }
+    }, [user, navigate]);
 
 
   const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {

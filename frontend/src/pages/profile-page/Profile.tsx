@@ -4,6 +4,7 @@ import { Avatar, Box, Button, Card, CardContent, Typography, Stack, Divider, Lis
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Profile.scss';
+import { getCurrentUser } from '../../services/api';
 
 interface Trail {
     id: number;
@@ -14,75 +15,106 @@ interface Trail {
 
 const Profile: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
-    const [userTrails, setUserTrails] = useState<any[]>([]); // State for storing the user's trails
-    //   const { user, loading } = useAuth() as { user: any, loading: any };
-
+    const [user, setUser] = useState<string>();
+    // const { user, loading } = useAuth() as { user: any, loading: any };
     const navigate = useNavigate();
+  
+    // useEffect(() => {
+    //   console.log("user1:" +user);
+    //   if (!loading && !user) {
+    //     console.log("user2:" +user);
+    //     // navigate('/login');
+    //   } else if (user) {
+    //     console.log("user3:" +user);
+    //     getRating();
+    //   }
+    // }, [user, loading, navigate]);
+  
 
+  const getUserData = async () => {
+    try {
+      const response = await getCurrentUser();
+      setUser(response);
+      console.log(user);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
 
-    //   useEffect(() => {
-    //     if (!user) {
-    //       navigate('/login');
-    //     } else {
-    //       fetchUserTrails();
-    //     }
-    //   }, [user, loading, navigate]);
-
-    // Fetch the user's trails from the backend
-    //   const fetchUserTrails = async () => {
-    //     try {
-    //       const response = await axios.get(`http://localhost:8000/api/user-trails/${user.id}`); // Adjust endpoint if needed
-    //       setUserTrails(response.data);
-    //     } catch (error: any) {
-    //       setError(error.message);
-    //     }
-    //   };
-
-    //   if (loading) return <Typography>Loading...</Typography>;
-    //   if (!user) return null;
-    if (error) return <Typography color="error">{error}</Typography>;
-
-
+}
+    getUserData();
+   
+    // if (loading) return <Typography>Loading...</Typography>;
+    // if (!user) return null;
+    // if (error) return <Typography color="error">{error}</Typography>;
+  
+    const profilePictureUrl =  'path_to_default_profile_picture';
+  
+    // const calculateAge = (birthDate: string): number | null => {
+    //   if (!birthDate) return null;
+    //   const birthYear = new Date(birthDate).getFullYear();
+    //   return new Date().getFullYear() - birthYear;
+    // };
+  
+    // const age = calculateAge(user.birth_date);
+    // const formattedYear = user.created_at ? new Date(user.created_at).getFullYear() : t("YEAR");
+  
     return (
-        <Box className="profile-box">
-        <Card className="profile-card">
-            <CardContent>
-                <Box className="profile-details">
-                    <Typography variant="h6">Profile Info:</Typography>
-                    <Typography variant="subtitle2">Test UserName</Typography>
-                    {/* <Box className="profile-info">
-                      <Typography variant="h6">{user.name || 'User Name'}</Typography>
-                     </Box> * */}
-                    {/* User Info and Trails */}
-                </Box>
-
-                <Divider sx={{ borderBottomWidth: 4, paddingTop: '10px' }} />
-                
-                {/* Trails List */}
-                <Box className="profile-details">
-                    <Typography variant="h6" >Your Trails:</Typography>
-                    {/* User Info and Trails */}
-                </Box>
-                {/* <List className="trails-list">
-                    {userTrails.map((trail) => (
-                        <ListItem key={trail.id} className="trail-item">
-                            <ListItemText primary={trail.title} secondary={trail.description} />
-                        </ListItem>
-                    ))}
-                </List> */}
-
-                <Divider sx={{ borderBottomWidth: 4 }} />
-
-                {/* Edit Profile Button
-                <Box className="edit-profile-btn">
-                    <Button onClick={() => navigate('/profile-edit')} variant="contained">
-                        Edit Profile
-                    </Button>
-                </Box> */}
-            </CardContent>
-        </Card>
-        </Box>
+      <Card sx={{ maxWidth: 700, maxHeight: 700, margin: 'auto', padding: 2, backgroundColor: "#F1F1F1" }}>
+        <Stack direction="row" spacing={2} alignItems="center" ml={6}>
+          <Avatar
+            src={profilePictureUrl}
+            alt="Profile"
+            sx={{ width: 80, height: 80 }}
+          />
+          <Box>
+            {/* <Typography variant="h6">{user.name || 'User Name'}</Typography> */}
+            <Typography variant="body2" color="text.secondary">
+              {/* {age ? `${age} years` :'Age not available'} */}
+            </Typography>
+          </Box>
+        </Stack>
+        <CardContent>
+          <Box mb={2} ml={4}>
+            <Typography variant="h6" mb={3}>Profile Info:</Typography>
+            {/* <Stack direction="row" spacing={2} alignItems="center" mb={1}>
+              <img src={verifiedIcon} alt="Verified" width={20} />
+              <Typography variant="body2">{user.is_verified ? t('VERIFIED_PROFILE') : t('UNVERIFIED_PROFILE')}</Typography>
+            </Stack> */}
+            {/* <Stack direction="row" spacing={2} alignItems="center" mb={1}>
+              <img src={infoMessageIcon} alt="Info Message" width={20} />
+              <Typography variant="body2">{user.bio || t('DEFAULT_MSG')}</Typography>
+            </Stack> */}
+            {/* <Stack direction="row" spacing={2} alignItems="center" mb={1}>
+              <img src={phoneIcon} alt="Phone" width={20} />
+              <Typography variant="body2">{user.phone_number || t('HIDDEN')}</Typography>
+            </Stack> */}
+            {/* <Stack direction="row" spacing={2} alignItems="center">
+              <img src={locationIcon} alt="Location" width={20} />
+              <Typography variant="body2">{user.location || t('HIDDEN')}</Typography>
+            </Stack> */}
+          </Box>
+          <Divider sx={{ borderBottomWidth: 4 }} />
+          <Box mb={2} ml={4} mt={5}>
+            <Typography variant="body2" style={{ display: 'flex', alignItems: 'center' }} mb={1}>
+              {/* <img src={carIcon} width={20} alt="Car Icon" /> */}
+              {/* <span style={{ marginLeft: '4px' }}>{user.completed_rides || '0'} {t('RIDES')}</span> */}
+            </Typography>
+            <Typography variant="body2" style={{ display: 'flex', alignItems: 'center' }} mb={3}>
+              {/* <img src={starIcon} width={20} alt="Star" /> */}
+              {/* <span style={{ marginLeft: '4px' }}>{userRating.toFixed(1) || '0.0'}</span>1 */}
+            </Typography>
+            <Divider sx={{ borderBottomWidth: 2 }} />
+            <Stack direction="row" spacing={2} alignItems="center" mb={2} mt={2}>
+              {/* <img src={lightningIcon} alt="Member Since" width={10} /> */}
+              {/* <Typography variant="body2">{t('MEMBER-SINCE')} {formattedYear || 'YEAR'}</Typography> */}
+            </Stack>
+            <Divider sx={{ borderBottomWidth: 2 }} />
+            <Button onClick={() => navigate('/profile-edit')} variant="contained" color="error">Edit</Button>
+          </Box>
+        </CardContent>
+      </Card>
     );
-};
-
-export default Profile;
+  };
+  
+  export default Profile;

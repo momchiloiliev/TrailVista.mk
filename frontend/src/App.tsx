@@ -7,6 +7,7 @@ import TrailPlanner from './pages/trail-planner/TrailPlanner';
 import Register from './pages/register-page/Register';
 import Login from './pages/login-page/Login';
 import Profile from './pages/profile-page/Profile';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
 // import {RoutePage} from "./pages/route-page/RoutePage";
 // import TransportCard from "./pages/transport-card-page/TransportCard";
@@ -18,9 +19,9 @@ const App: React.FC = () => {
                     <Route path="/" element={<MainLayout/>}>
                         <Route index element={<Home/>}/>
                         <Route path="browse-trails" element={<BrowseTrails/>}/>
-                        <Route path="trail-planner" element={<TrailPlanner/>}/>
+                        {/* <Route path="trail-planner" element={<TrailPlanner/>}/> */}
                         <Route path="profile" element={<Profile/>}/>
-
+                        <Route path="trail-planner" element={<ProtectedRoute><TrailPlanner /></ProtectedRoute>} />
                         {/* <Route path="features" element={<Features/>}/>
 
                         <Route path="route/:id" element={<RoutePage/>}/> */}

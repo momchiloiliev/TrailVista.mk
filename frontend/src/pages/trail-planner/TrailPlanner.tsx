@@ -5,11 +5,13 @@ import 'leaflet/dist/leaflet.css';
 import './TrailPlanner.scss';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerIconRetina from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { createPost } from '../../services/api';
+
 
 // Configure Leaflet marker icons
 L.Icon.Default.mergeOptions({
@@ -44,10 +46,21 @@ const TrailPlanner: React.FC = () => {
     const [elevation, setElevation] = useState(0); // Calculated elevation gain
     const [distance, setDistance] = useState(0);   // Calculated distance
     const [time, setTime] = useState('00:00:00');  // Calculated moving time
+    const { login, user, setUser } = useAuth(); // Access login function and user from AuthContext
+    const navigate = useNavigate();
+
+
+    // useEffect(() => {
+    //     // If the user is already logged in, redirect them to the homepage or the previous page
+    //     if (!user) {
+    //         const redirectTo = '/login';
+    //         navigate(redirectTo);
+    //     }
+    // }, [user, navigate]);
 
     const defaultCenter: [number, number] = [41.731362341090836, 21.79114740261746]; // Default center
 
-    const navigate = useNavigate();
+    
 
     // Haversine formula to calculate distance between two coordinates in meters
     const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {

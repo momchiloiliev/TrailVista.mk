@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
     Drawer,
     Grid,
@@ -17,26 +17,18 @@ import './Header.scss';
 import Logo from '../../shared/images/logo.png';
 import { useNavigate } from 'react-router-dom';
 import { logout } from "../../services/api";
+import { useAuth } from '../../context/AuthContext';
 
 export const Header = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const isMobile = useMediaQuery('(max-width:1200px)');
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [isAuth, setIsAuth] = useState(false);
-    // const { user } = useAuth() as { user: any };
+    const { user, logout } = useAuth(); // Get user and logout from AuthContext
     const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     setIsAuth(!!user);
-    // }, [user]);
-        useEffect(() => {
-        setIsAuth(true);
-    });
 
     const handleLogout = async () => {
         try {
             await logout();
-            setIsAuth(false);
             navigate('/');
         } catch (error) {
             console.error("Logout error:", error);
@@ -61,7 +53,6 @@ export const Header = () => {
     const headerElements = [
         { text: '🏞️ Browse Trails', href: '/browse-trails' },
         { text: '🛤️ Trail Planner', href: '/trail-planner' },
-        // { text: '⭐ Features', href: '/features' }
     ];
 
     return (
@@ -87,9 +78,9 @@ export const Header = () => {
                                     </Link>
                                 </ListItem>
                             ))}
-                            {isAuth ? (
+                            {user ? ( // If the user is logged in
                                 <>
-                                    <ListItem style={{ padding: '12px 16px',  }}>
+                                    <ListItem style={{ padding: '12px 16px' }}>
                                         <Link href="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>Profile</Link>
                                     </ListItem>
                                     <ListItem style={{ padding: '12px 16px' }} onClick={handleLogout}>
@@ -118,7 +109,7 @@ export const Header = () => {
                             </Link>
                         </Grid>
                     ))}
-                    {isAuth ? (
+                    {user ? ( // Show profile and logout if the user is logged in
                         <Grid item xs={12} lg={1} className='header-element-container' style={{ textAlign: 'right' }}>
                             <IconButton onClick={handleMenuClick} size="large" className='header-icon'>
                                 <AccountCircleIcon style={{ fontSize: '3rem' }} />

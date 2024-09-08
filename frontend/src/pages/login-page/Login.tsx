@@ -3,36 +3,30 @@ import './login.scss';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { useNavigate, useLocation } from 'react-router-dom';
-// import { useAuth } from '../../context/AuthContext';
-import './login.scss';
 import { loginUser } from '../../services/api';
-
+import { useAuth } from '../../context/AuthContext'; // Use AuthContext
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
-    const [isAuth, setIsAuth] = useState<boolean>(false);
     const [rememberMe, setRememberMe] = useState<boolean>(false);
-    // const { login, user, logout, loading } = useAuth() as { login: Function, user: any, logout: Function, loading: boolean };
+    const { login, user, setUser } = useAuth(); // Access login function and user from AuthContext
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    // useEffect(() => {
-    //     if (user) {
-    //         setIsAuth(true);
-    //         navigate('/');
-    //     }
-    //     else {
-    //         setIsAuth(false);
-    //     }
-    // }, [user]);
-
+    useEffect(() => {
+        // If the user is already logged in, redirect them to the homepage or the previous page
+        if (user) {
+            const redirectTo = location.state?.from || '/';
+            navigate(redirectTo);
+        }
+    }, [user, navigate, location.state]);
 
     const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
-    }
+    };
 
     const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
@@ -46,7 +40,10 @@ const Login: React.FC = () => {
         event.preventDefault();
         setError(null);
         try {
-            await loginUser(email, password, rememberMe);
+            await login(email, password, rememberMe); // Login the user
+            const redirectTo = location.state?.from?.pathname || '/';  // Default to '/' if no redirect
+            navigate(redirectTo, { replace: true }); 
+
         } catch (error: any) {
             console.error('Login error:', error.message);
             setError(error.message);
@@ -55,7 +52,6 @@ const Login: React.FC = () => {
 
     const handleGoogleLogin = () => {
         window.location.href = 'http://localhost:8000/auth/google';
-
     };
 
     const handleFacebookLogin = () => {
@@ -99,7 +95,11 @@ const Login: React.FC = () => {
                 </div>
                 <div className="options">
                     <label>
-                        <input type="checkbox" />
+                        <input
+                            type="checkbox"
+                            checked={rememberMe}
+                            onChange={handleRememberMeChange}
+                        />
                         Remember me
                     </label>
                     <a href="#">Forget Password</a>
