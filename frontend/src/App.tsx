@@ -23,7 +23,6 @@ const App: React.FC = () => {
                         <Route path="profile" element={<Profile/>}/>
                         <Route path="trail-planner" element={<ProtectedRoute><TrailPlanner /></ProtectedRoute>} />
                         {/* <Route path="features" element={<Features/>}/>
-
                         <Route path="route/:id" element={<RoutePage/>}/> */}
                         {/*
                             Note: All other routes need to be children of MainLayout route so the header and footer render accordingly
@@ -37,7 +36,6 @@ const App: React.FC = () => {
                             <Route path="/profile-edit" element={<ProfileEditPage />}> </Route> */}
 
                         </Route>
-                        
                 </Routes>
             </Router>
     );
