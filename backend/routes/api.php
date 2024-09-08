@@ -24,6 +24,7 @@ Route::get('/posts/{postId}/media', [MediaController::class, 'index']);
 
 
 Route::get('/storage/gpx-files/{filename}', [FileController::class, 'getGpxFile']);
+Route::get('/download-gpx/{filename}/{title}', [FileController::class, 'getGpxFile']);
 
 
 // Protected routes (Require authentication)

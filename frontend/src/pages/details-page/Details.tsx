@@ -144,9 +144,16 @@ const Details: React.FC = () => {
     };
 
     const handleDownloadGPX = () => {
-        window.open(`http://localhost:8000/storage/${trail?.file_path}`, '_blank');
+        if (trail?.file_path && trail?.title) {
+            const filename = trail.file_path.split('/').pop(); // Extract the filename from the file path
+            const title = encodeURIComponent(trail.title);  // Encode title to handle special characters
+    
+            window.open(`http://localhost:8000/api/download-gpx/${filename}/${title}`, '_blank');
+        } else {
+            alert("GPX file or trail title not found.");
+        }
     };
-
+    
     const handlePrint = () => {
         window.print();
     };
