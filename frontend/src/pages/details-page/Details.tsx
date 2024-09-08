@@ -12,6 +12,7 @@ import { MapContainer, TileLayer, Polyline, useMap } from 'react-leaflet';
 import L, { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Details.scss'; // For custom styling
+import CommentSection from '../../components/comment-section/CommentSection';
 
 interface TrailDetails {
     id: number;
@@ -211,6 +212,18 @@ const Details: React.FC = () => {
                             </Typography>
                         </CardContent>
                     </Card>
+                    <Grid container spacing={2}>
+                        <Grid item xs={6} style={{ textAlign: 'left' }}>
+                            {/* Add CommentSection here */}
+                    <div className="comment-section">
+                        <CommentSection trailId={trail.id} />
+                    </div>
+                        </Grid>
+                    </Grid>
+                    {/* Add CommentSection here
+                    <div className="comment-section">
+                        <CommentSection trailId={trail.id} />
+                    </div> */}
                 </Grid>
 
                 {/* Second Grid: Trail Metrics and Map (40%) */}
@@ -221,7 +234,7 @@ const Details: React.FC = () => {
                                 <MapContainer
                                     center={coords.length > 0 ? coords[0] : [41.731362341090836, 21.79114740261746]}
                                     zoom={9}
-                                    style={{ height: '300px', width: '100%' }}
+                                    style={{ height: '400px', width: '100%' }}
                                 >
                                     <TileLayer
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

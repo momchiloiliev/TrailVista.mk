@@ -131,3 +131,19 @@ export const getGpxFile = async (filePath: string) => {
     console.log(error);
   }
 };
+
+
+export const getComments = async(postData: FormData)=>{
+  try {
+    await getCsrfToken();
+    const response = await api.post(`http://localhost:8000/api/posts/1/comments`, postData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+        withCredentials:true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error submitting comment:', error);
+  }
+}
