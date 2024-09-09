@@ -42,7 +42,7 @@ export const Footer = () => {
                 </Link>
             </Grid>
             <Grid item xs={12} lg={4} className='footer-element-container links'>
-                <Typography className='footer-element-title' variant='h4'>Most Popular Routes</Typography>
+                <Typography className='footer-element-title' variant='h4'>Most Popular Trails</Typography>
                 {popularRoutes.length ? (
                     popularRoutes.map((route, index) => (
                         <Link
@@ -55,7 +55,7 @@ export const Footer = () => {
                         </Link>
                     ))
                 ) : (
-                    <Typography variant="body2">No popular routes available</Typography>
+                    <Typography variant="body2">No popular trails available</Typography>
                 )}
             </Grid>
             <Grid item xs={12} lg={4} className='footer-element-container links'>
