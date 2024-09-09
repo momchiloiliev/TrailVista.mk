@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, Typography, TextField, Button, Card, CardContent } from '@mui/material';
 import './CommentSection.scss';
+import { getComments } from '../../services/api';
 
 interface Comment {
     id?: number;
@@ -49,12 +50,23 @@ const CommentSection: React.FC<CommentSectionProps> = ({ trailId }) => {
         formData.append('content', newComment);
 
         try {
-            const response = await axios.post(`http://localhost:8000/api/posts/${trailId}/comments`, formData);
+            const response = await getComments(trailId, formData);
             setComments([...comments, response.data]);
             setNewComment('');
         } catch (error) {
             console.error('Error submitting comment:', error);
         }
+
+        const fetchComments = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8000/api/posts/${trailId}/comments`);
+                setComments(response.data);
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        };
+
+        fetchComments();
     };
 
     return (
@@ -102,13 +114,13 @@ const CommentSection: React.FC<CommentSectionProps> = ({ trailId }) => {
             <Box className="comments-list" mt={2}>
                 {comments.length > 0 ? (
                     comments.map((comment) => (
-                        <Card key={comment.id} className="comment-card" sx={{ mb: 2 }}>
+                        <Card key={comment?.id} className="comment-card" sx={{ mb: 2 }}>
                             <CardContent>
                                 <Typography variant="subtitle1">
-                                    {comment.author_name}
+                                    {comment?.author_name}
                                 </Typography>
                                 <Typography variant="body2" gutterBottom>
-                                    {comment.content}
+                                    {comment?.content}
                                 </Typography>
                             </CardContent>
                         </Card>
