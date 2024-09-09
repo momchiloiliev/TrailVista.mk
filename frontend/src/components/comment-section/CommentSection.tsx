@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Box, Typography, TextField, Button, Card, CardContent } from '@mui/material';
 import './CommentSection.scss';
 import { getComments } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 
 interface Comment {
     id?: number;
@@ -17,6 +18,7 @@ interface CommentSectionProps {
 const CommentSection: React.FC<CommentSectionProps> = ({ trailId }) => {
     const [comments, setComments] = useState<Comment[]>([]);
     const [newComment, setNewComment] = useState<string>('');
+    const { user } = useAuth();
 
     useEffect(() => {
         const fetchComments = async () => {
@@ -51,22 +53,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({ trailId }) => {
 
         try {
             const response = await getComments(trailId, formData);
-            setComments([...comments, response.data]);
+            setComments([...comments, response]);
             setNewComment('');
         } catch (error) {
             console.error('Error submitting comment:', error);
         }
-
-        const fetchComments = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8000/api/posts/${trailId}/comments`);
-                setComments(response.data);
-            } catch (error) {
-                console.error('Error fetching comments:', error);
-            }
-        };
-
-        fetchComments();
     };
 
     return (
@@ -75,41 +66,43 @@ const CommentSection: React.FC<CommentSectionProps> = ({ trailId }) => {
                 Comment Section
             </Typography>
 
-            <Box className="new-comment-box" mt={2}>
-                <TextField
-                    className='leave-comment'
-                    label="Leave a comment"
-                    variant="outlined"
-                    fullWidth
-                    multiline
-                    rows={3}
-                    value={newComment}
-                    onChange={handleCommentChange}
-                    sx={{
-                        mb: 2,
-                        '& label.Mui-focused': {
-                            color: 'green',
-                        },
-                        '& label:hover': {
-                            color: 'darkgreen',
-                        },
-                        '& .MuiOutlinedInput-root': {
-                            '& fieldset': {
-                                borderColor: 'green',
+            
+                <Box className="new-comment-box" mt={2}>
+                    <TextField
+                        className="leave-comment"
+                        label="Leave a comment"
+                        variant="outlined"
+                        fullWidth
+                        multiline
+                        disabled={!user}
+                        rows={3}
+                        value={newComment}
+                        onChange={handleCommentChange}
+                        sx={{
+                            mb: 2,
+                            '& label.Mui-focused': {
+                                color: 'green',
                             },
-                            '&:hover fieldset': {
-                                borderColor: 'darkgreen',
+                            '& label:hover': {
+                                color: 'darkgreen',
                             },
-                            '&.Mui-focused fieldset': {
-                                borderColor: 'green',
+                            '& .MuiOutlinedInput-root': {
+                                '& fieldset': {
+                                    borderColor: 'green',
+                                },
+                                '&:hover fieldset': {
+                                    borderColor: 'darkgreen',
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: 'green',
+                                },
                             },
-                        },
-                    }}
-                />
-                <Button variant="contained" color="success" onClick={handleSubmit} sx={{ mt: 2 }} className='submit-comment'>
-                    Submit
-                </Button>
-            </Box>
+                        }}
+                    />
+                    {user && <Button variant="contained" color="success" onClick={handleSubmit} sx={{ mt: 2 }} className="submit-comment">
+                        Submit
+                    </Button>}
+                </Box>
 
             <Box className="comments-list" mt={2}>
                 {comments.length > 0 ? (

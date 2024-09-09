@@ -35,7 +35,7 @@ export const Footer = () => {
     ];
 
     return (
-        <Grid container xs={12} id='footer-container'>
+        <Grid item container xs={12} id='footer-container'>
             <Grid item xs={12} lg={4} className='footer-element-container logos'>
                 <Link href={'/'}>
                     <img src={Logo} alt='trailvista' className='logo' />
