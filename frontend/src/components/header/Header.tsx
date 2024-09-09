@@ -53,63 +53,30 @@ export const Header = () => {
     const headerElements = [
         { text: '🏞️ Browse Trails', href: '/browse-trails' },
         { text: '🛤️ Trail Planner', href: '/trail-planner' },
-        
     ];
 
     return (
         <Grid container alignItems="center" id='header-container'>
-            <Grid item xs={6} lg={2}>
+            <Grid item xs={6} lg={2} className="logo-container">
                 <Link href='/'>
                     <img src={Logo} alt='logo' className='logo' />
                 </Link>
             </Grid>
-            {!isMobile && (
-                <Grid item lg={6} className="menu-container">
-                    {headerElements.map((headerElement, index) => (
-                        <Link href={headerElement.href} className='header-element' key={index}>
-                            <Typography className='header-element-text' variant='h6'>{headerElement.text}</Typography>
-                        </Link>
-                    ))}
-                </Grid>
-            )}
-            <Grid item xs={6} lg={4} className="auth-container">
-                {isMobile ? (
+
+            <Grid item xs={6} lg={8} className="menu-container">
+                {!isMobile ? (
                     <>
-                        <IconButton onClick={toggleDrawer(true)} size="large" className='menu-icon'>
-                            <MenuIcon style={{ fontSize: '2rem' }} />
-                        </IconButton>
-                        <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-                            <List onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)} style={{ width: 250 }}>
-                                {headerElements.map((headerElement, index) => (
-                                    <ListItem key={index} style={{ padding: '35px 16px' }}>
-                                        <Link href={headerElement.href} className='drawer-link'>
-                                            <Typography variant='h6'>{headerElement.text}</Typography>
-                                        </Link>
-                                    </ListItem>
-                                ))}
-                                {user ? (
-                                    <>
-                                        <ListItem style={{ padding: '12px 16px' }}>
-                                            <Link href="/profile" className='drawer-link'>Profile</Link>
-                                        </ListItem>
-                                        <ListItem style={{ padding: '12px 16px' }} onClick={handleLogout}>
-                                            <Link href="#" className='drawer-link'>Logout</Link>
-                                        </ListItem>
-                                    </>
-                                ) : (
-                                    <>
-                                        <ListItem style={{ padding: '12px 16px' }}>
-                                            <Link href="/login" className='drawer-link'>Login</Link>
-                                        </ListItem>
-                                        <ListItem style={{ padding: '12px 16px' }}>
-                                            <Link href="/register" className='drawer-link'>Register</Link>
-                                        </ListItem>
-                                    </>
-                                )}
-                            </List>
-                        </Drawer>
+                        {headerElements.map((headerElement, index) => (
+                            <Link href={headerElement.href} className='header-element' key={index}>
+                                <Typography className='header-element-text' fontSize={20}>{headerElement.text}</Typography>
+                            </Link>
+                        ))}
                     </>
-                ) : (
+                ) : null}
+            </Grid>
+
+            <Grid item xs={6} lg={2} className="profile-container">
+                {!isMobile ? (
                     <>
                         {user ? (
                             <>
@@ -132,8 +99,43 @@ export const Header = () => {
                             </div>
                         )}
                     </>
+                ) : (
+                    <IconButton onClick={toggleDrawer(true)} size="large" className='menu-icon'>
+                        <MenuIcon style={{ fontSize: '2rem' }} />
+                    </IconButton>
                 )}
             </Grid>
+
+            <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+                <List onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)} style={{ width: 250 }}>
+                    {headerElements.map((headerElement, index) => (
+                        <ListItem key={index} style={{ padding: '10px 10px' }}>
+                            <Link href={headerElement.href} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Typography fontSize={15}>{headerElement.text}</Typography>
+                            </Link>
+                        </ListItem>
+                    ))}
+                    {user ? (
+                        <>
+                            <ListItem style={{ padding: '12px 16px', marginLeft: '20px' }}>
+                                <Link href="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>Profile</Link>
+                            </ListItem>
+                            <ListItem style={{ padding: '12px 16px', marginLeft: '20px' }} onClick={handleLogout}>
+                                <Link href="#" style={{ textDecoration: 'none', color: 'inherit' }}>Logout</Link>
+                            </ListItem>
+                        </>
+                    ) : (
+                        <>
+                            <ListItem style={{ padding: '12px 16px' }}>
+                                <Link href="/login" style={{ textDecoration: 'none', color: 'inherit' }}>Login</Link>
+                            </ListItem>
+                            <ListItem style={{ padding: '12px 16px' }}>
+                                <Link href="/register" style={{ textDecoration: 'none', color: 'inherit' }}>Register</Link>
+                            </ListItem>
+                        </>
+                    )}
+                </List>
+            </Drawer>
         </Grid>
     );
 };
