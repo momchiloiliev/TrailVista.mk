@@ -131,3 +131,30 @@ export const getGpxFile = async (filePath: string) => {
     console.log(error);
   }
 };
+
+export const addToFavorites = async (postId: number) => {
+  try {
+    const response = await api.post(`/api/favorites/${postId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding to favorites:', error);
+  }
+};
+
+export const removeFromFavorites = async (postId: number) => {
+  try {
+    const response = await api.delete(`/api/favorites/${postId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error removing from favorites:', error);
+  }
+};
+
+export const getFavorites = async () => {
+  try {
+    const response = await api.get('/api/favorites');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching favorites:', error);
+  }
+};
