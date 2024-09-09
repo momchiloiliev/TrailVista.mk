@@ -1,33 +1,29 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
-import HomePageLogo from '../../shared/images/home-page.png';
+import { Box, Typography, Button } from "@mui/material";
+import HomePageLogo from '../../shared/images/logo.png';
 import './Home.scss';
 import Bike from '../../shared/images/bike.png';
 import Hiking from '../../shared/images/hiking-trail.png';
 import River from '../../shared/images/river-trail.png';
 
 export const Home = () => {
-
     return (
         <Box id='homepage-container'>
-            <Box className='logo-container'>
-                <Typography variant='h3' className='title'>
-                    LET YOUR ADVENTURE BEGIN HERE
-                </Typography>
+            <Box className='hero-container'>
                 <Box className='grid-container'>
                     <Box className='text-content'>
                         <Typography variant='h3' className='home-title'>
-                            Embark on Every Journey
+                            Embark on Your Adventure
                         </Typography>
-                        <Typography variant='h3' className='home-text'>
-                            From winding mountain paths to hidden forest trails, TrailVista.mk guides you through every twist and turn, taking you to the peaks and valleys of your next adventure.              
+                        <Typography variant='h5' className='home-text'>
+                            Whether you're hiking, biking, or exploring the hidden paths, TrailVista.mk is here to guide you to new experiences.
                         </Typography>
-                        {/* <Typography variant='h3' className="home-text">
-                            taking you to the peaks and valleys of your next adventure.  
-                        </Typography> */}
+                        <Button variant="contained" className="explore-btn" href="/browse-trails">
+                            Start Exploring
+                        </Button>
                     </Box>
                     <Box className='image-content'>
-                        <img src={HomePageLogo} alt='home-page-logo' className='home-page-logo' />
+                        <img src={HomePageLogo} alt='logo' className='home-page-logo' />
                     </Box>
                 </Box>
             </Box>
@@ -68,7 +64,7 @@ export const Home = () => {
                 <Box className={'ai-info-content'}>
                     <img src={River} className='robot-image' alt='shtop-ai' />
                     <Typography variant='h4' className='ai-text'>
-                        Discover TrailVista.mk and our routes and find your perfect trail to follow!
+                        Discover TrailVista.mk and our routes to find your perfect trail for an unforgettable adventure!
                     </Typography>
                 </Box>
             </Box>

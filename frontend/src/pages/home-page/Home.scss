@@ -1,26 +1,15 @@
 #homepage-container {
     margin-bottom: 1rem;
 
-    .logo-container {
-        background-color: #88d9b2;
+    .hero-container {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../shared/images/hero-bg.jpeg') center/cover no-repeat;
         position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
         padding: 3rem 0;
-        height: auto; /* Adjust height to fit content */
-    }
-
-    .title {
-        font-family: 'Manrope-Medium', serif !important;
-        color: #103d27 !important;
-        font-weight: bold;
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-        text-transform: uppercase;
-        text-align: center;
-        font-size: 40px;
-        z-index: 1;
+        height: 100vh;
+        color: white;
     }
 
     .grid-container {
@@ -29,30 +18,37 @@
         width: 100%;
         align-items: center;
         gap: 2rem;
+        padding: 0 10%;
     }
 
     .text-content {
-        padding-left: 10%;
+        padding-left: 5%;
     }
 
     .home-title {
-        font-family: 'Manrope-Bold', serif !important;
-        color: #103d27 !important;
+        font-family: 'Manrope-Bold', serif;
         font-weight: bold;
         text-align: left;
         font-size: 3rem;
-        z-index: 1;
-        margin-top: 0; /* Removes extra space above */
+        margin-bottom: 1.5rem;
     }
 
     .home-text {
-        font-family: 'Manrope-Regular', serif !important;
-        color: #103d27;
-        text-align: left;
-        font-size: 2.5rem;
-        line-height: 3rem;
-        z-index: 1;
-        margin-top: 30px;
+        font-family: 'Manrope-Regular', serif;
+        font-size: 1.5rem;
+        line-height: 2.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .explore-btn {
+        background-color: #25794c;
+        color: white;
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        text-transform: none;
+        &:hover {
+            background-color: #47a385;
+        }
     }
 
     .image-content {
@@ -62,58 +58,73 @@
     }
 
     .home-page-logo {
-        width: 100%; /* Responsive width */
+        width: 100%;
         height: auto;
-        max-width: 500px; /* Limit the maximum width */
+        max-width: 500px;
+        transform: scale(1.2); /* Slightly enlarges the logo */
+        animation: float 4s ease-in-out infinite; /* Adds floating effect */
+    }
+
+    @keyframes float {
+        0% {
+            transform: translatey(0px);
+        }
+        50% {
+            transform: translatey(-20px);
+        }
+        100% {
+            transform: translatey(0px);
+        }
     }
 
     .infocards-container {
         display: flex;
-        flex-direction: row;
-        gap: 4rem;
+        flex-wrap: wrap;
         justify-content: center;
-        width: 100%;
+        gap: 2rem;
         margin: 5rem 0;
+        padding: 0 5%;
     }
 
     .infocard {
-        background-color: rgb(212, 212, 212);
+        background-color: #f4f4f4;
         padding: 3rem;
         border-radius: 1rem;
         text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 500px;
-        height: 300px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        transition: transform 0.3s ease;
+        &:hover {
+            transform: translateY(-10px);
+        }
 
         .infocard-icon {
-            max-height: 6rem;
+            max-height: 5rem;
             margin-bottom: 1rem;
         }
 
         .infocard-title {
-            font-family: 'Manrope-Bold', serif !important;
-            color: black;
+            font-family: 'Manrope-Bold', serif;
+            font-size: 1.5rem;
             margin-bottom: 1rem;
-            font-size: 2rem;
         }
 
         .infocard-text {
-            font-family: 'Manrope-Regular', serif !important;
-            color: black;
-            font-size: 1.5rem;
-            line-height: 2rem;
+            font-family: 'Manrope-Regular', serif;
+            font-size: 1rem;
+            line-height: 1.5rem;
+            color: #555;
         }
     }
 
     .ai-info-container {
-        background-color: #27A166;
-        width: 100%;
-        height: 20rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        background-color: #3fb572;
+        color: white;
         padding: 4rem 0;
-        margin-bottom: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
     }
 
     .ai-info-content {
@@ -130,11 +141,9 @@
     }
 
     .ai-text {
-        font-family: 'Manrope-Medium', serif !important;
-        color: black;
-        width: 70rem;
+        font-family: 'Manrope-Medium', serif;
+        width: 60%;
         font-size: 2rem;
-        line-height: 2rem;
-        margin-left: 2rem;
+        line-height: 2.5rem;
     }
 }
