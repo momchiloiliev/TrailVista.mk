@@ -52,14 +52,10 @@ Route::middleware('auth:sanctum')
         Route::delete('/posts/{id}', [PostController::class, 'destroy']);
 
 
-    });
+    
         Route::post('/favorites/{postId}', [FavoriteController::class, 'addToFavorites']);
         Route::delete('/favorites/{postId}', [FavoriteController::class, 'removeFromFavorites']);
         Route::get('/favorites', [FavoriteController::class, 'getFavorites']);
+    
 
-
-        // Example route to fetch user-specific data
-        Route::get('/user/data', function (Request $request) {
-            return new UserResource($request->user());
-        });
     });
