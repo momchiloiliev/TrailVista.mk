@@ -133,17 +133,17 @@ export const getGpxFile = async (filePath: string) => {
 };
 
 
-export const getComments = async(postData: FormData)=>{
+export const getComments = async (postId: number, postData: FormData) => {
   try {
-    await getCsrfToken();
-    const response = await api.post(`http://localhost:8000/api/posts/1/comments`, postData, {
+    await getCsrfToken();  // Ensure the CSRF token is fetched
+    const response = await api.post(`http://localhost:8000/api/posts/${postId}/comments`, postData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-        withCredentials:true,
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
     console.error('Error submitting comment:', error);
   }
-}
+};

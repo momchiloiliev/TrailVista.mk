@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box, Typography, TextField, Button, Card, CardContent } from '@mui/material';
+import { Box, Typography, TextField, Button, Card, CardContent, Grid } from '@mui/material';
+import { FiUpload } from 'react-icons/fi';
 import './CommentSection.scss';
+import { getComments } from '../../services/api';
 
 interface Comment {
     id?: number;
@@ -34,6 +36,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({ trailId }) => {
     const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewComment(event.target.value);
     };
+    axios.defaults.withCredentials = true;
+    const fetchCsrfToken = async () => {
+        await axios.get('http://localhost:8000/sanctum/csrf-cookie');
+    };
 
     const handleSubmit = async () => {
         if (!newComment) {
@@ -41,20 +47,23 @@ const CommentSection: React.FC<CommentSectionProps> = ({ trailId }) => {
             return;
         }
 
+        const formData = new FormData();
+        formData.append('content', newComment);  // Use 'content' instead of 'comment'
+
         try {
-            // Get the CSRF token if needed
-            await axios.get('http://localhost:8000/sanctum/csrf-cookie');
-
-            // Send the new comment to the server
-            const response = await axios.post(`http://localhost:8000/api/posts/${trailId}/comments`, {
-                content: newComment,
-            });
-
-            // Add the newly created comment (with author_name and content) to the state
-            setComments([...comments, response.data]);
-
-            // Clear the new comment input field
+            const response = await getComments(trailId, formData);
+            setComments([...comments, response.data]); // Add the new comment to the list
             setNewComment('');
+            const fetchComments = async () => {
+                try {
+                    const response = await axios.get(`http://localhost:8000/api/posts/${trailId}/comments`); // Correct the URL here
+                    setComments(response.data);
+                } catch (error) {
+                    console.error('Error fetching comments:', error);
+                }
+            };
+
+            fetchComments();
         } catch (error) {
             console.error('Error submitting comment:', error);
         }
@@ -83,6 +92,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({ trailId }) => {
                         '& label.Mui-focused': {
                             color: 'green',
                         },
+                        // Optional: Change label color on hover
+                        '& label:hover': {
+                            color: 'darkgreen',
+                        },
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {
                                 borderColor: 'green', // Default border color
@@ -103,25 +116,24 @@ const CommentSection: React.FC<CommentSectionProps> = ({ trailId }) => {
                 </Button>
             </Box>
 
-            {/* Scrollable comment list */}
-            <Box className="comments-list" mt={2}>
-                {comments.length > 0 ? (
-                    comments.map((comment) => (
-                        <Card key={comment?.id} className="comment-card" sx={{ mb: 2 }}>
-                            <CardContent>
-                                <Typography variant="subtitle1">
-                                    {comment?.author_name || 'Anonymous'}
-                                </Typography>
-                                <Typography variant="body2" gutterBottom>
-                                    {comment?.content}
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    ))
-                ) : (
-                    <Typography>No comments yet. Be the first to comment!</Typography>
-                )}
-            </Box>
+            {/* Render the comments */}
+            {comments.length > 0 ? (
+                comments.map((comment) => (
+                    <Card key={comment?.id} className="comment-card" sx={{ mb: 2 }}>
+                        <CardContent>
+                            <Typography variant="subtitle1">
+                                {comment?.author_name}
+                            </Typography>
+                            <Typography variant="body2" gutterBottom>
+                                {comment?.content}
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                ))
+            ) : (
+                <Typography>No comments yet. Be the first to comment!</Typography>
+            )}
+
         </Box>
     );
 };
