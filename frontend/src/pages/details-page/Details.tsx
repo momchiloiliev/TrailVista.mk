@@ -203,11 +203,11 @@ const Details: React.FC = () => {
                                     {renderSportIcon(trail.sport)}
                                 </div>
                             </div>
-                            <Typography variant="h4" gutterBottom>
+                            <Typography variant="h4" gutterBottom className='title'>
                                 {trail.title}
                             </Typography>
                             <Divider />
-                            <Typography variant="body1" gutterBottom>
+                            <Typography variant="body1" gutterBottom className='desc'>
                                 {trail.description}
                             </Typography>
                         </CardContent>
