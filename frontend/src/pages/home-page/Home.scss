@@ -1,5 +1,7 @@
 #homepage-container {
     margin-bottom: 1rem;
+    width: 100%;
+
 
     .hero-container {
         background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../shared/images/hero-bg.jpeg') center/cover no-repeat;
@@ -10,12 +12,11 @@
         padding: 3rem 0;
         height: 100vh;
         color: white;
-    }
+        }
 
     .grid-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        width: 100%;
         align-items: center;
         gap: 2rem;
         padding: 0 10%;
