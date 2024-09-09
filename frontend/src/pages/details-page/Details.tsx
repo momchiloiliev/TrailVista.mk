@@ -13,6 +13,7 @@ import L, { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Details.scss'; // For custom styling
 import CommentSection from '../../components/comment-section/CommentSection';
+import ElevationMap from '../../components/elevation-map/ElevationMap';
 
 interface TrailDetails {
     id: number;
@@ -39,6 +40,8 @@ const Details: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [coords, setCoords] = useState<LatLngTuple[]>([]); // Map coordinates
+    const [gpxData, setGpxData] = useState<string>(''); // Store GPX data as a string
+
 
     useEffect(() => {
         const fetchTrail = async () => {
@@ -48,6 +51,8 @@ const Details: React.FC = () => {
 
                 // Fetch GPX file
                 const gpxResponse = await axios.get(`http://localhost:8000/storage/${post.file_path}`, { responseType: 'text' });
+                setGpxData(gpxResponse.data);
+
                 const gpxData = new window.DOMParser().parseFromString(gpxResponse.data, 'application/xml');
                 const parsedCoords = parseGPX(gpxData); // Parse GPX data to get coordinates
 
@@ -215,15 +220,15 @@ const Details: React.FC = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={6} style={{ textAlign: 'left' }}>
                             {/* Add CommentSection here */}
-                    <div className="comment-section">
-                        <CommentSection trailId={trail.id} />
-                    </div>
+                            <div className="comment-section">
+                                <CommentSection trailId={trail.id} />
+                            </div>
                         </Grid>
+                        {/* <Grid item xs={6} style={{ textAlign: 'right'}}>
+                        <ElevationMap gpxData={gpxData} />
+                        </Grid> */}
                     </Grid>
-                    {/* Add CommentSection here
-                    <div className="comment-section">
-                        <CommentSection trailId={trail.id} />
-                    </div> */}
+
                 </Grid>
 
                 {/* Second Grid: Trail Metrics and Map (40%) */}
@@ -275,6 +280,9 @@ const Details: React.FC = () => {
                                 </Grid>
                             </Grid>
                         </CardContent>
+                    </Card>
+                    <Card>
+                    <ElevationMap gpxData={gpxData} />
                     </Card>
                 </Grid>
             </Grid>
