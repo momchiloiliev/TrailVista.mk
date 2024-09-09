@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './TrailPlanner.scss';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { createPost } from '../../services/api'; // Ensure you import your API function properly
 import { useAuth } from '../../context/AuthContext';
 
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerIconRetina from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import { createPost } from '../../services/api';
 
 
 // Configure Leaflet marker icons
@@ -46,17 +45,14 @@ const TrailPlanner: React.FC = () => {
     const [elevation, setElevation] = useState(0); // Calculated elevation gain
     const [distance, setDistance] = useState(0);   // Calculated distance
     const [time, setTime] = useState('00:00:00');  // Calculated moving time
+
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const { login, user, setUser } = useAuth(); // Access login function and user from AuthContext
     const navigate = useNavigate();
 
 
-    // useEffect(() => {
-    //     // If the user is already logged in, redirect them to the homepage or the previous page
-    //     if (!user) {
-    //         const redirectTo = '/login';
-    //         navigate(redirectTo);
-    //     }
-    // }, [user, navigate]);
+
 
     const defaultCenter: [number, number] = [41.731362341090836, 21.79114740261746]; // Default center
 
@@ -91,10 +87,7 @@ const TrailPlanner: React.FC = () => {
             const trkpts = xmlDoc.getElementsByTagName('trkpt');
             const coordinates: [number, number][] = [];
             let totalElevationGain = 0;
-            let totalElevationLoss = 0;
             let totalDistance = 0;
-            let startTime: Date | null = null;
-            let endTime: Date | null = null;
             let movingTimeInSeconds = 0;
 
             let previousLat = 0;
@@ -132,23 +125,10 @@ const TrailPlanner: React.FC = () => {
                 if (i > 0) {
                     const elevationDifference = elevation - previousElevation;
                     if (Math.abs(elevationDifference) >= elevationThreshold) { // Ignore small elevation changes
-                        if (elevationDifference > 0) {
-                            totalElevationGain += elevationDifference; // Positive gain
-                        } else {
-                            totalElevationLoss += Math.abs(elevationDifference); // Negative loss
-                        }
+                        totalElevationGain += Math.max(elevationDifference, 0); // Positive gain
                     }
                 }
 
-                // Set start time
-                if (i === 0) {
-                    startTime = new Date(timePoint);
-                }
-
-                // Update end time
-                endTime = currentTime;
-
-                // Update previous point
                 previousLat = lat;
                 previousLon = lon;
                 previousElevation = elevation;
@@ -207,11 +187,15 @@ const TrailPlanner: React.FC = () => {
 
         try {
             // Send the form data to the backend
-            createPost(formData);
-            // console.log('Trail added successfully:', response.data);
-            navigate('/browse-trails');
+            await createPost(formData);
+            setSuccessMessage('Trail added successfully! Redirecting...');
+            
+            // Redirect after 3 seconds
+            setTimeout(() => {
+                navigate('/browse-trails');
+            }, 3000);
         } catch (error: any) {
-            console.error('Error adding trail:', error.response?.data || error.message);
+            setErrorMessage('Error adding trail: ' + (error.response?.data || error.message));
         }
     };
 
@@ -280,6 +264,10 @@ const TrailPlanner: React.FC = () => {
 
                     <button type="submit">Add Trail</button>
                 </form>
+
+                {/* Display success or error messages */}
+                {/* {successMessage && <p className="success-message">{successMessage}</p>} */}
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
             </div>
 
             <div className="map-container">
@@ -300,15 +288,10 @@ const TrailPlanner: React.FC = () => {
                     {gpxCoordinates.length > 0 && (
                         <Polyline positions={gpxCoordinates} color="blue" />
                     )}
-
-                    {/* Set the marker on the GPX route
-                    {markerPosition && (
-                        <Marker position={markerPosition} />
-                    )} */}
                 </MapContainer>
             </div>
         </div>
     );
-}
+};
 
 export default TrailPlanner;

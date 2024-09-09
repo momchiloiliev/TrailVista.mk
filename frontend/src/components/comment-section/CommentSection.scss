@@ -1,0 +1,20 @@
+.comment-section {
+    padding: 10px;
+    height: auto;
+}
+
+.new-comment-box {
+    padding: 10px;
+}
+
+.comments-list {
+    max-height: 550px; /* Set a fixed height for the comment list */
+    overflow-y: auto;  /* Enable vertical scrolling */
+    margin-top: 10px;
+    padding-right: 10px; /* Add padding to avoid scroll bar overlapping */
+}
+
+.comment-card {
+    border-radius: 3px;
+    margin: 10px;
+}

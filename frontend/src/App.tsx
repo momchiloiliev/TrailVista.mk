@@ -8,6 +8,8 @@ import Register from './pages/register-page/Register';
 import Login from './pages/login-page/Login';
 import Profile from './pages/profile-page/Profile';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import Details from './pages/details-page/Details';
+import Sidebar from './components/sidebar/Sidebar';
 
 // import {RoutePage} from "./pages/route-page/RoutePage";
 // import TransportCard from "./pages/transport-card-page/TransportCard";
@@ -19,6 +21,10 @@ const App: React.FC = () => {
                     <Route path="/" element={<MainLayout/>}>
                         <Route index element={<Home/>}/>
                         <Route path="browse-trails" element={<BrowseTrails/>}/>
+                        <Route path="trail-planner" element={<TrailPlanner/>}/>
+                        <Route path="profile" element={<Profile/>}/>
+                        <Route path="posts/:id" element={<Details/>}/>
+                        <Route path="/" element={<Sidebar onTrailSelect={(id) => {}} />} />
                         {/* <Route path="trail-planner" element={<TrailPlanner/>}/> */}
                         <Route path="profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
                         <Route path="trail-planner" element={<ProtectedRoute><TrailPlanner /></ProtectedRoute>} />
