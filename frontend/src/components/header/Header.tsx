@@ -21,9 +21,9 @@ import { useAuth } from '../../context/AuthContext';
 
 export const Header = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const isMobile = useMediaQuery('(max-width:1200px)');
+    const isMobile = useMediaQuery('(max-width: 1200px)');
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const { user, logout } = useAuth(); // Get user and logout from AuthContext
+    const { user } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -53,6 +53,7 @@ export const Header = () => {
     const headerElements = [
         { text: '🏞️ Browse Trails', href: '/browse-trails' },
         { text: '🛤️ Trail Planner', href: '/trail-planner' },
+        
     ];
 
     return (
@@ -62,79 +63,77 @@ export const Header = () => {
                     <img src={Logo} alt='logo' className='logo' />
                 </Link>
             </Grid>
-            {isMobile ? (
-                <>
-                    <Grid item xs={6} style={{ textAlign: 'right', paddingLeft: '100px' }}>
-                        <IconButton onClick={toggleDrawer(true)} size="large">
+            {!isMobile && (
+                <Grid item lg={6} className="menu-container">
+                    {headerElements.map((headerElement, index) => (
+                        <Link href={headerElement.href} className='header-element' key={index}>
+                            <Typography className='header-element-text' variant='h6'>{headerElement.text}</Typography>
+                        </Link>
+                    ))}
+                </Grid>
+            )}
+            <Grid item xs={6} lg={4} className="auth-container">
+                {isMobile ? (
+                    <>
+                        <IconButton onClick={toggleDrawer(true)} size="large" className='menu-icon'>
                             <MenuIcon style={{ fontSize: '2rem' }} />
                         </IconButton>
-                    </Grid>
-                    <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-                        <List onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)} style={{ width: 250 }}>
-                            {headerElements.map((headerElement, index) => (
-                                <ListItem key={index} style={{ padding: '35px 16px' }}>
-                                    <Link href={headerElement.href} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        <Typography variant='h6'>{headerElement.text}</Typography>
-                                    </Link>
-                                </ListItem>
-                            ))}
-                            {user ? ( // If the user is logged in
-                                <>
-                                    <ListItem style={{ padding: '12px 16px' }}>
+                        <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+                            <List onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)} style={{ width: 250 }}>
+                                {headerElements.map((headerElement, index) => (
+                                    <ListItem key={index} style={{ padding: '35px 16px' }}>
+                                        <Link href={headerElement.href} className='drawer-link'>
+                                            <Typography variant='h6'>{headerElement.text}</Typography>
+                                        </Link>
+                                    </ListItem>
+                                ))}
+                                {user ? (
+                                    <>
+                                        <ListItem style={{ padding: '12px 16px' }}>
+                                            <Link href="/profile" className='drawer-link'>Profile</Link>
+                                        </ListItem>
+                                        <ListItem style={{ padding: '12px 16px' }} onClick={handleLogout}>
+                                            <Link href="#" className='drawer-link'>Logout</Link>
+                                        </ListItem>
+                                    </>
+                                ) : (
+                                    <>
+                                        <ListItem style={{ padding: '12px 16px' }}>
+                                            <Link href="/login" className='drawer-link'>Login</Link>
+                                        </ListItem>
+                                        <ListItem style={{ padding: '12px 16px' }}>
+                                            <Link href="/register" className='drawer-link'>Register</Link>
+                                        </ListItem>
+                                    </>
+                                )}
+                            </List>
+                        </Drawer>
+                    </>
+                ) : (
+                    <>
+                        {user ? (
+                            <>
+                                <IconButton onClick={handleMenuClick} size="large" className='header-icon'>
+                                    <AccountCircleIcon style={{ fontSize: '3rem' }} />
+                                </IconButton>
+                                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+                                    <MenuItem onClick={handleMenuClose}>
                                         <Link href="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>Profile</Link>
-                                    </ListItem>
-                                    <ListItem style={{ padding: '12px 16px' }} onClick={handleLogout}>
-                                        <Link href="#" style={{ textDecoration: 'none', color: 'inherit' }}>Logout</Link>
-                                    </ListItem>
-                                </>
-                            ) : (
-                                <>
-                                    <ListItem style={{ padding: '12px 16px' }}>
-                                        <Link href="/login" style={{ textDecoration: 'none', color: 'inherit' }}>Login</Link>
-                                    </ListItem>
-                                    <ListItem style={{ padding: '12px 16px' }}>
-                                        <Link href="/register" style={{ textDecoration: 'none', color: 'inherit' }}>Register</Link>
-                                    </ListItem>
-                                </>
-                            )}
-                        </List>
-                    </Drawer>
-                </>
-            ) : (
-                <>
-                    {headerElements.map((headerElement, index) => (
-                        <Grid item xs={12} lg={2} key={index} className='header-element-container'>
-                            <Link href={headerElement.href} className='header-element'>
-                                <Typography className='header-element-text' variant='h5'>{headerElement.text}</Typography>
-                            </Link>
-                        </Grid>
-                    ))}
-                    {user ? ( // Show profile and logout if the user is logged in
-                        <Grid item xs={12} lg={1} className='header-element-container' style={{ textAlign: 'right' }}>
-                            <IconButton onClick={handleMenuClick} size="large" className='header-icon'>
-                                <AccountCircleIcon style={{ fontSize: '3rem' }} />
-                            </IconButton>
-                            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-                                <MenuItem onClick={handleMenuClose}>
-                                    <Link href="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>Profile</Link>
-                                </MenuItem>
-                                <MenuItem onClick={() => { handleMenuClose(); handleLogout(); }}>
-                                    Logout
-                                </MenuItem>
-                            </Menu>
-                        </Grid>
-                    ) : (
-                        <>
-                            <Grid item xs={12} lg={1} className='header-element-container' style={{ textAlign: 'right' }}>
-                                <Link href="/login" style={{ textDecoration: 'none' }}>Login</Link>
-                            </Grid>
-                            <Grid item xs={12} lg={1} className='header-element-container' style={{ textAlign: 'right' }}>
-                                <Link href="/register" style={{ textDecoration: 'none' }}>Register</Link>
-                            </Grid>
-                        </>
-                    )}
-                </>
-            )}
+                                    </MenuItem>
+                                    <MenuItem onClick={() => { handleMenuClose(); handleLogout(); }}>
+                                        Logout
+                                    </MenuItem>
+                                </Menu>
+                            </>
+                        ) : (
+                            <div className="auth-links">
+                                <Link href="/login" className='header-element'>Login</Link>
+                                <Link href="/register" className='header-element'>Register</Link>
+                            </div>
+                        )}
+                    </>
+                )}
+            </Grid>
         </Grid>
     );
 };

@@ -158,3 +158,12 @@ export const getFavorites = async () => {
     console.error('Error fetching favorites:', error);
   }
 };
+
+export const getMostFavorites = async () => {
+  try {
+    const response = await api.get('/api/most-favorited-routes');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching favorites:', error);
+  }
+};

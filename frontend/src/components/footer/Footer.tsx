@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Link, Typography } from "@mui/material";
 import './Footer.scss';
 import Logo from '../../shared/images/logo.png';
-import { getFavorites } from '../../services/api';  // Import the API function
+import { getFavorites, getMostFavorites } from '../../services/api';  // Import the API function
 
 interface Route {
     id: number;
@@ -18,7 +18,7 @@ export const Footer = () => {
     useEffect(() => {
         const fetchPopularRoutes = async () => {
             try {
-                const response = await getFavorites(); // API call
+                const response = await getMostFavorites(); // API call
                 setPopularRoutes(response);
             } catch (error) {
                 console.error('Error fetching popular routes:', error);
@@ -43,7 +43,7 @@ export const Footer = () => {
             </Grid>
             <Grid item xs={12} lg={4} className='footer-element-container links'>
                 <Typography className='footer-element-title' variant='h4'>Most Popular Trails</Typography>
-                {popularRoutes.length ? (
+                {popularRoutes?.length ? (
                     popularRoutes.map((route, index) => (
                         <Link
                             key={index}

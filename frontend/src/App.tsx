@@ -20,7 +20,7 @@ const App: React.FC = () => {
                         <Route index element={<Home/>}/>
                         <Route path="browse-trails" element={<BrowseTrails/>}/>
                         {/* <Route path="trail-planner" element={<TrailPlanner/>}/> */}
-                        <Route path="profile" element={<Profile/>}/>
+                        <Route path="profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
                         <Route path="trail-planner" element={<ProtectedRoute><TrailPlanner /></ProtectedRoute>} />
                         {/* <Route path="features" element={<Features/>}/>
                         <Route path="route/:id" element={<RoutePage/>}/> */}
