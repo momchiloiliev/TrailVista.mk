@@ -16,16 +16,20 @@ use App\Http\Controllers\MediaController;
 Route::get('/status', function () {
     return response()->json(['status' => 'API is working!'], 200);
 });
-
-Route::get('/posts', [PostController::class, 'index']);   // View all posts
-Route::get('/posts/{id}', [PostController::class, 'show']); // View a specific post
+//POSTS
+Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts/{id}', [PostController::class, 'show']);
 // Route::post('/posts', [PostController::class, 'store']);
+
+//POSTS COMENTS RATINGS MEDIA
 Route::get('/posts/{postId}/comments', [CommentController::class, 'index']);
 Route::get('/posts/{postId}/ratings', [RatingController::class, 'index']);
 Route::get('/posts/{postId}/media', [MediaController::class, 'index']);
 
+//MOST FAVORITED ROUTES
 Route::get('/most-favorited-routes', [FavoriteController::class, 'mostFavoritedRoutes']);
 
+//GPX FILES
 Route::get('/storage/gpx-files/{filename}', [FileController::class, 'getGpxFile']);
 Route::get('/download-gpx/{filename}/{title}', [FileController::class, 'getGpxFile']);
 
@@ -44,15 +48,12 @@ Route::middleware('auth:sanctum')
         Route::put('/posts/{id}', [PostController::class, 'update']);  // Edit a post
         Route::delete('/posts/{id}', [PostController::class, 'destroy']);  // Delete a post
 
+        //POSTS COMENTS RATINGS MEDIA
         Route::post('/posts/{postId}/comments', [CommentController::class, 'store']);
         Route::post('/posts/{postId}/ratings', [RatingController::class, 'store']);
         Route::post('/posts/{postId}/media', [MediaController::class, 'store']);
 
-        Route::put('/posts/{id}', [PostController::class, 'update']);
-        Route::delete('/posts/{id}', [PostController::class, 'destroy']);
-
-
-    
+        //FAVORITES
         Route::post('/favorites/{postId}', [FavoriteController::class, 'addToFavorites']);
         Route::delete('/favorites/{postId}', [FavoriteController::class, 'removeFromFavorites']);
         Route::get('/favorites', [FavoriteController::class, 'getFavorites']);

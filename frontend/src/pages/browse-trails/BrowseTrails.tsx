@@ -17,16 +17,15 @@ interface Trail {
     title: string;
     description: string;
     file_path: string;
-    coords: LatLngTuple[]; // Fixed: coordinates should use LatLngTuple[]
+    coords: LatLngTuple[];
 }
 
-// Preset list of bold colors to ensure high visibility
+
 const boldColors = [
     '#FF0000', '#00FF00', '#0000FF', '#FFA500', '#800080', '#00FFFF', '#FFC0CB', '#FFFF00', '#8B4513', '#FFD700',
     '#008000', '#FF6347', '#4682B4', '#DC143C', '#FF4500', '#9ACD32', '#FF1493', '#7B68EE', '#7FFF00', '#00FA9A'
 ];
 
-// Define the missing `getRandomColor` function to generate random colors
 const getRandomColor = () => {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -39,7 +38,7 @@ const getRandomColor = () => {
 const BrowseTrails: React.FC = () => {
     const [trails, setTrails] = useState<Trail[]>([]);
     const [trailPaths, setTrailPaths] = useState<any[]>([]);
-    const [selectedTrailCoords, setSelectedTrailCoords] = useState<LatLngTuple[]>([]); // Fixed the type to match an array of LatLngTuple
+    const [selectedTrailCoords, setSelectedTrailCoords] = useState<LatLngTuple[]>([]);
 
     // Fetch trails from the backend
     useEffect(() => {
@@ -90,7 +89,7 @@ const BrowseTrails: React.FC = () => {
         for (let i = 0; i < trkpts.length; i++) {
             const lat = parseFloat(trkpts[i].getAttribute('lat') || '0');
             const lon = parseFloat(trkpts[i].getAttribute('lon') || '0');
-            coordinates.push([lat, lon]); // Fixed the push to properly return a tuple of [number, number]
+            coordinates.push([lat, lon]);
         }
         return coordinates;
     };

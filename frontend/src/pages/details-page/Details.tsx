@@ -11,9 +11,11 @@ import { BsPrinter, BsSave } from "react-icons/bs";
 import { MapContainer, TileLayer, Polyline, useMap } from 'react-leaflet';
 import L, { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import './Details.scss'; // For custom styling
+import './Details.scss';
 import CommentSection from '../../components/comment-section/CommentSection';
 import ElevationMap from '../../components/elevation-map/ElevationMap';
+import MediaComponent from '../../components/MediaComponent/MediaComponent';
+import FavoriteButton from '../../components/FavoritesButton';
 
 interface TrailDetails {
     id: number;
@@ -25,7 +27,7 @@ interface TrailDetails {
     distance: number | null;
     elevation: number | null;
     file_path: string;
-    coords: LatLngTuple[]; // Coordinates for map
+    coords: LatLngTuple[];
 }
 
 L.Icon.Default.mergeOptions({
@@ -39,9 +41,8 @@ const Details: React.FC = () => {
     const [trail, setTrail] = useState<TrailDetails | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [coords, setCoords] = useState<LatLngTuple[]>([]); // Map coordinates
-    const [gpxData, setGpxData] = useState<string>(''); // Store GPX data as a string
-
+    const [coords, setCoords] = useState<LatLngTuple[]>([]);
+    const [gpxData, setGpxData] = useState<string>(''); 
 
     useEffect(() => {
         const fetchTrail = async () => {
@@ -54,7 +55,7 @@ const Details: React.FC = () => {
                 setGpxData(gpxResponse.data);
 
                 const gpxData = new window.DOMParser().parseFromString(gpxResponse.data, 'application/xml');
-                const parsedCoords = parseGPX(gpxData); // Parse GPX data to get coordinates
+                const parsedCoords = parseGPX(gpxData); 
 
                 setCoords(parsedCoords);
 
@@ -95,7 +96,7 @@ const Details: React.FC = () => {
         const map = useMap();
         useEffect(() => {
             if (coords && coords.length > 0) {
-                map.fitBounds(L.latLngBounds(coords)); // Center map on the coordinates
+                map.fitBounds(L.latLngBounds(coords)); 
             }
         }, [coords, map]);
         return null;
@@ -146,14 +147,15 @@ const Details: React.FC = () => {
     };
 
     const handleSave = () => {
+        
         alert("Trail saved!");
     };
 
     const handleDownloadGPX = () => {
         if (trail?.file_path && trail?.title) {
-            const filename = trail.file_path.split('/').pop(); // Extract the filename from the file path
-            const title = encodeURIComponent(trail.title);  // Encode title to handle special characters
-    
+            const filename = trail.file_path.split('/').pop(); 
+            const title = encodeURIComponent(trail.title);
+
             window.open(`http://localhost:8000/api/download-gpx/${filename}/${title}`, '_blank');
         } else {
             alert("GPX file or trail title not found.");
@@ -196,7 +198,6 @@ const Details: React.FC = () => {
     return (
         <Box p={4} className="details-container">
             <Grid container spacing={3}>
-                {/* First Grid: Trail Information (60%) */}
                 <Grid item xs={12} md={7}>
                     <Card className="details-card-info">
                         <CardContent>
@@ -217,21 +218,27 @@ const Details: React.FC = () => {
                             </Typography>
                         </CardContent>
                     </Card>
+
                     <Grid item container spacing={2}>
                         <Grid item xs={6} style={{ textAlign: 'left' }}>
-                            {/* Add CommentSection here */}
+                            {/* Comment Section */}
                             <div className="comment-section">
                                 <CommentSection trailId={trail.id} />
                             </div>
                         </Grid>
-                        {/* <Grid item xs={6} style={{ textAlign: 'right'}}>
-                        <ElevationMap gpxData={gpxData} />
-                        </Grid> */}
+                        <Grid item xs={6} style={{ textAlign: 'left' }}>
+                            {/* Comment Section */}
+                            <div className="comment-section">
+                                <MediaComponent />
+                            </div>
+                        </Grid>
+                        
                     </Grid>
 
+                    {/* Media Gallery */}
+                     {/* Media box added here */}
                 </Grid>
 
-                {/* Second Grid: Trail Metrics and Map (40%) */}
                 <Grid item xs={12} md={5}>
                     <Card className="details-card-metrics">
                         <CardContent>
@@ -250,7 +257,6 @@ const Details: React.FC = () => {
                                 </MapContainer>
                             </Box>
                             <Grid container spacing={2}>
-                                {/* Metrics Column */}
                                 <Grid item xs={6} style={{ textAlign: 'left' }}>
                                     <Typography variant="subtitle1" gutterBottom>
                                         <FiClock style={{ marginRight: 8 }} /> Time: {formatTime(trail.time)}
@@ -263,11 +269,8 @@ const Details: React.FC = () => {
                                     </Typography>
                                 </Grid>
 
-                                {/* Action Buttons Column */}
                                 <Grid item xs={6} style={{ textAlign: 'right' }}>
-                                    <Button onClick={handleSave} startIcon={<BsSave />} fullWidth sx={{ mb: 2 }}>
-                                        Save
-                                    </Button>
+                                    <FavoriteButton postId={Number(id)} isFavorited={false}/>
                                     <Button onClick={handleDownloadGPX} startIcon={<FiDownload />} fullWidth sx={{ mb: 2 }}>
                                         Download GPX file
                                     </Button>
@@ -282,7 +285,7 @@ const Details: React.FC = () => {
                         </CardContent>
                     </Card>
                     <Card>
-                    <ElevationMap gpxData={gpxData} />
+                        <ElevationMap gpxData={gpxData} />
                     </Card>
                 </Grid>
             </Grid>

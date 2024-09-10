@@ -30,16 +30,15 @@ class PostController extends Controller
     {
         Log::info('Creating a new post', ['request_data' => $request->all()]);
 
-        // Validate input
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'file_path' => 'required|file|mimes:xml,gpx|max:51200',
             'sport' => 'required|in:biking,running,hiking',
             'moderation_status' => 'nullable|in:easy,medium,hard,extreme',
-            'distance' => 'required|numeric',  // Accept calculated distance
-            'elevation' => 'required|numeric', // Accept calculated elevation
-            'time' => 'required|string',       // Accept calculated time
+            'distance' => 'required|numeric',
+            'elevation' => 'required|numeric',
+            'time' => 'required|string',
         ]);
 
         // Store the GPX file
@@ -61,9 +60,9 @@ class PostController extends Controller
             'moderation_status' => $request->input('moderation_status'),
             'sport' => $request->input('sport'),
             'file_path' => $path,
-            'elevation' => $request->input('elevation'),  // Elevation passed from the frontend
-            'distance' => $request->input('distance'),    // Distance passed from the frontend
-            'time' => $request->input('time'),            // Time passed from the frontend
+            'elevation' => $request->input('elevation'),
+            'distance' => $request->input('distance'),
+            'time' => $request->input('time'),
         ]);
 
         return response()->json($post, 201);
@@ -74,19 +73,16 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        // Check if the authenticated user is the owner of the post
         if ($request->user()->id !== $post->user_id) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        // Validate input
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'sport' => 'required|in:biking,running,hiking',
         ]);
 
-        // Update post
         $post->update($request->only(['title', 'description', 'sport']));
 
         return response()->json($post);
@@ -97,7 +93,6 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        // Check if the authenticated user is the owner of the post
         if ($request->user()->id !== $post->user_id) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Link, Typography } from "@mui/material";
 import './Footer.scss';
 import Logo from '../../shared/images/logo.png';
-import { getFavorites, getMostFavorites } from '../../services/api';  // Import the API function
+import { getFavorites, getMostFavorites } from '../../services/api';
 
 interface Route {
     id: number;
@@ -18,7 +18,7 @@ export const Footer = () => {
     useEffect(() => {
         const fetchPopularRoutes = async () => {
             try {
-                const response = await getMostFavorites(); // API call
+                const response = await getMostFavorites();
                 setPopularRoutes(response);
             } catch (error) {
                 console.error('Error fetching popular routes:', error);
@@ -49,7 +49,7 @@ export const Footer = () => {
                             key={index}
                             className='footer-element-text'
                             variant='h5'
-                            href={`/posts/${route.id}`}  // Assuming the post URL is by ID
+                            href={`/posts/${route.id}`}
                         >
                             {route.title}
                         </Link>

@@ -135,7 +135,7 @@ export const getGpxFile = async (filePath: string) => {
 
 export const getComments = async (postId: number, postData: FormData) => {
   try {
-    await getCsrfToken();  // Ensure the CSRF token is fetched
+    await getCsrfToken(); 
     const response = await api.post(`http://localhost:8000/api/posts/${postId}/comments`, postData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -184,3 +184,18 @@ export const getMostFavorites = async () => {
     console.error('Error fetching favorites:', error);
   }
 };
+
+export const postMedia = async (postId: number, formData: FormData) =>{
+  getCsrfToken();
+  try{
+    const response = await api.post(`http://localhost:8000/api/posts/${postId}/media`, formData, {
+      headers: {
+          'Content-Type': 'multipart/form-data',
+      },
+      withCredentials: true,
+    });
+    console.log(response);
+  }catch(error){
+    console.error('Error uploading media:', error);
+  }
+}

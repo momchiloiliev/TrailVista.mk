@@ -4,20 +4,19 @@ import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { loginUser } from '../../services/api';
-import { useAuth } from '../../context/AuthContext'; // Use AuthContext
+import { useAuth } from '../../context/AuthContext';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const [rememberMe, setRememberMe] = useState<boolean>(false);
-    const { login, user, setUser } = useAuth(); // Access login function and user from AuthContext
+    const { login, user, setUser } = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
-        // If the user is already logged in, redirect them to the homepage or the previous page
         if (user) {
             const redirectTo = location.state?.from || '/';
             navigate(redirectTo);
@@ -40,8 +39,8 @@ const Login: React.FC = () => {
         event.preventDefault();
         setError(null);
         try {
-            await login(email, password, rememberMe); // Login the user
-            const redirectTo = location.state?.from?.pathname || '/';  // Default to '/' if no redirect
+            await login(email, password, rememberMe);
+            const redirectTo = location.state?.from?.pathname || '/';
             navigate(redirectTo, { replace: true }); 
 
         } catch (error: any) {
@@ -72,7 +71,7 @@ const Login: React.FC = () => {
                     Facebook
                 </button>
             </div>
-            <div className="divider">Email</div>
+            <div className="divider">or</div>
 
             <form onSubmit={handleSubmit}>
                 <div className="input-group">

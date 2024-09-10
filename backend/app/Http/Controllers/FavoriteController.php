@@ -49,8 +49,8 @@ class FavoriteController extends Controller
     {
         // Query to get most favorited routes
         $mostFavoritedRoutes = Post::withCount('favorites')
-            ->orderBy('favorites_count', 'desc') // Order by most favorites
-            ->take(5) // Limit to top 10 or any number you need
+            ->orderBy('favorites_count', 'desc')
+            ->take(5)
             ->get();
 
         return response()->json($mostFavoritedRoutes);

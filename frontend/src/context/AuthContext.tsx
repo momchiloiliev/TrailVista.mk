@@ -58,16 +58,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const login = async (email: string, password: string, remember: boolean) => {
         try {
             await loginUser(email, password, remember);
-            await fetchUser(); // Fetch user data after successful login
+            await fetchUser();
         } catch (error: unknown) {
             throw new Error((error as Error).message);
         }
     };
 
-    // Function to handle logout
+
     const logout = async () => {
         await apiLogout();
-        setUser(null); // Clear the user data after logout
+        setUser(null);
     };
 
     const value = {

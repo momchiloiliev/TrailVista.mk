@@ -4,7 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './TrailPlanner.scss';
 import { useNavigate } from 'react-router-dom';
-import { createPost } from '../../services/api'; // Ensure you import your API function properly
+import { createPost } from '../../services/api'; 
 import { useAuth } from '../../context/AuthContext';
 
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -113,7 +113,7 @@ const TrailPlanner: React.FC = () => {
                     totalDistance += distanceBetweenPoints;
 
                     const timeDifferenceInSeconds = (currentTime.getTime() - previousTime!.getTime()) / 1000;
-                    const speed = (distanceBetweenPoints / 1000) / (timeDifferenceInSeconds / 3600); // speed in km/h
+                    const speed = (distanceBetweenPoints / 1000) / (timeDifferenceInSeconds / 3600);
 
                     // Calculate moving time if speed exceeds threshold
                     if (speed > speedThreshold) {
@@ -124,8 +124,8 @@ const TrailPlanner: React.FC = () => {
                 // Calculate elevation gain/loss with threshold
                 if (i > 0) {
                     const elevationDifference = elevation - previousElevation;
-                    if (Math.abs(elevationDifference) >= elevationThreshold) { // Ignore small elevation changes
-                        totalElevationGain += Math.max(elevationDifference, 0); // Positive gain
+                    if (Math.abs(elevationDifference) >= elevationThreshold) {
+                        totalElevationGain += Math.max(elevationDifference, 0);
                     }
                 }
 
@@ -142,13 +142,12 @@ const TrailPlanner: React.FC = () => {
 
             setTime(`${movingHours.toString().padStart(2, '0')}:${movingMinutes.toString().padStart(2, '0')}:${movingSeconds.toString().padStart(2, '0')}`);
 
-            setElevation(totalElevationGain); // Elevation gain is the total uphill portion
-            setDistance(totalDistance / 1000); // Convert to kilometers
+            setElevation(totalElevationGain);
+            setDistance(totalDistance / 1000);
             setGpxCoordinates(coordinates);
 
             if (coordinates.length > 0) {
-                setMarkerPosition(coordinates[0]); // Set marker on the start of the route
-                // Set bounds to fit the trail within the map
+                setMarkerPosition(coordinates[0]);
                 const latLngBounds = L.latLngBounds(coordinates);
                 setBounds(latLngBounds);
             }
@@ -180,20 +179,17 @@ const TrailPlanner: React.FC = () => {
             formData.append('file_path', gpxFile);
         }
 
-        // Append calculated distance, elevation, and moving time
         formData.append('distance', distance.toString());
         formData.append('elevation', elevation.toString());
         formData.append('time', time);
 
         try {
-            // Send the form data to the backend
             await createPost(formData);
             setSuccessMessage('Trail added successfully! Redirecting...');
             
-            // Redirect after 3 seconds
             setTimeout(() => {
                 navigate('/browse-trails');
-            }, 3000);
+            }, 2000);
         } catch (error: any) {
             setErrorMessage('Error adding trail: ' + (error.response?.data || error.message));
         }
@@ -266,13 +262,13 @@ const TrailPlanner: React.FC = () => {
                 </form>
 
                 {/* Display success or error messages */}
-                {/* {successMessage && <p className="success-message">{successMessage}</p>} */}
+
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
             </div>
 
             <div className="map-container">
                 <MapContainer
-                    center={markerPosition || defaultCenter} // Center the map on marker position if available
+                    center={markerPosition || defaultCenter}
                     zoom={9}
                     style={{ height: '100%', width: '100%' }}
                 >

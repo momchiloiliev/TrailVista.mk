@@ -12,14 +12,12 @@ class FileController extends Controller
 {
     $path = 'gpx_files/' . $filename;
 
-    // Ensure the file exists
     if (!Storage::disk('public')->exists($path)) {
         return response()->json(['error' => 'File not found'], 404);
     }
 
-    // Replace spaces in the title with underscores and add the .gpx extension
-    $sanitizedTitle = preg_replace('/\s+/', '_', $title);  // Replaces spaces with underscores
-    $gpxFilename = $sanitizedTitle . '.gpx';  // Use the trail title as the file name
+    $sanitizedTitle = preg_replace('/\s+/', '_', $title);
+    $gpxFilename = $sanitizedTitle . '.gpx';
 
     return Storage::disk('public')->download($path, $gpxFilename, [
         'Content-Type' => 'application/gpx+xml',

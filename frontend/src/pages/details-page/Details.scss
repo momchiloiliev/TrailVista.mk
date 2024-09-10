@@ -65,3 +65,10 @@
     // margin: 5px;
     border-radius: 5px;
 }
+
+.comment-list{
+    max-height: 550px;
+    overflow-y: auto;
+    margin-top: 10px;
+    padding-right: 10px;
+}

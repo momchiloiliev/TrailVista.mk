@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 // use App\Models\Favorite;
 class Favorite extends Model
 {
-    // Other relationships and attributes...
-
-    // Define the inverse relationship with posts
     public function post()
     {
         return $this->belongsTo(Post::class);
