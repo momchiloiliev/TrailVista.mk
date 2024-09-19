@@ -10,6 +10,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\AdminController;
 
 
 // Public routes
@@ -60,3 +61,11 @@ Route::middleware('auth:sanctum')
     
 
     });
+
+    // Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    //     // Admin routes
+    //     Route::get('/admin/posts', [AdminController::class, 'listPosts']);
+    //     Route::delete('/admin/posts/{id}', [AdminController::class, 'deletePost']);
+    //     Route::get('/admin/users', [AdminController::class, 'listUsers']);
+    //     Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser']);
+    // });
