@@ -19,13 +19,15 @@ const App: React.FC = () => {
     return (
             <Router>
                 <Routes>
+                <Route path="admin" element={<AdminDashboard/>}/>
+
                     <Route path="/" element={<MainLayout/>}>
                         <Route index element={<Home/>}/>
                         <Route path="browse-trails" element={<BrowseTrails/>}/>
                         <Route path="trail-planner" element={<TrailPlanner/>}/>
                         <Route path="profile" element={<Profile/>}/>
                         <Route path="posts/:id" element={<Details/>}/>
-                        <Route path="admin" element={<AdminDashboard/>}/>
+                        {/* <Route path="admin" element={<AdminDashboard/>}/> */}
                         <Route path="/" element={<Sidebar onTrailSelect={(id) => {}} />} />
                         {/* <Route path="trail-planner" element={<TrailPlanner/>}/> */}
                         <Route path="profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>

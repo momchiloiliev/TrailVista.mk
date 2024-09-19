@@ -60,12 +60,11 @@ Route::middleware('auth:sanctum')
         Route::get('/favorites', [FavoriteController::class, 'getFavorites']);
     
 
-    });
 
-    // Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    //     // Admin routes
-    //     Route::get('/admin/posts', [AdminController::class, 'listPosts']);
-    //     Route::delete('/admin/posts/{id}', [AdminController::class, 'deletePost']);
-    //     Route::get('/admin/users', [AdminController::class, 'listUsers']);
-    //     Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser']);
-    // });
+    });
+    Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+        Route::get('/admin/posts', [AdminController::class, 'listPosts']);
+        Route::delete('/admin/posts/{id}', [AdminController::class, 'deletePost']);
+        Route::get('/admin/users', [AdminController::class, 'listUsers']);
+        Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser']);
+    });

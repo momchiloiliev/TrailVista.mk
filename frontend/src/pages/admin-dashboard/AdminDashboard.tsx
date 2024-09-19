@@ -1,70 +1,190 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-
+import { getPosts, getUsers, deletePostById, deleteUserById } from '../../services/api'; // Import API functions
+import { Container, Grid, Card, CardContent, Typography, Button, CircularProgress, Box } from '@mui/material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
+import './AdminDashboard.scss'; // You can create a custom SCSS file for further customizations;
+import { useNavigate } from 'react-router-dom';
 // Define the types for Post and User
 interface Post {
     id: number;
     title: string;
+    description: string;
 }
 
 interface User {
     id: number;
     name: string;
+    email: string;
 }
 
 const AdminDashboard: React.FC = () => {
-    const [posts, setPosts] = useState<Post[]>([]);
-    const [users, setUsers] = useState<User[]>([]);
+    const [posts, setPosts] = useState<Post[] | null>(null);
+    const [users, setUsers] = useState<User[] | null>(null);
+    const [loadingPosts, setLoadingPosts] = useState(true);
+    const [loadingUsers, setLoadingUsers] = useState(true);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const navigate = useNavigate();
 
-    // Fetch posts and users when the component is mounted
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const postsResponse = await axios.get('/admin/posts');
-                const usersResponse = await axios.get('/admin/users');
-                setPosts(postsResponse.data);
-                setUsers(usersResponse.data);
-            } catch (error) {
-                console.error('Error fetching data', error);
+                const postsResponse = await getPosts();
+                const usersResponse = await getUsers();
+
+                // If the user doesn't have privileges, show error
+                if (postsResponse.status === 403 || usersResponse.status === 403) {
+                    setErrorMessage('You do not have admin privileges.');
+                    return;
+                }
+
+                // Assuming the API response contains a `posts` and `users` array inside `data`
+                setPosts(postsResponse.posts);
+                setUsers(usersResponse.users);
+
+                console.log('Posts Data:', postsResponse);
+                console.log('Users Data:', usersResponse);
+            } catch (error: any) {
+                console.error('Error fetching data:', error);
+
+                // Check if it's a 403 error
+                if (error.response?.status === 403) {
+                    setErrorMessage('You do not have admin privileges.');
+                } else {
+                    setErrorMessage('You do not have admin privileges.');
+                }
+            } finally {
+                setLoadingPosts(false);
+                setLoadingUsers(false);
             }
         };
         fetchData();
     }, []);
 
+    // If there's an error message, display it
+    if (errorMessage) {
+        return (
+            <Container>
+                <Typography variant="h5" color="error" align="center">
+                    {errorMessage}
+                </Typography>
+            </Container>
+        );
+    }
+
     // Function to delete a post
-    const deletePost = async (id: number) => {
-        await axios.delete(`/admin/posts/${id}`);
-        setPosts(posts.filter(post => post.id !== id));
+    const handleDeletePost = async (id: number) => {
+        try {
+            await deletePostById(id);
+            if (posts) {
+                setPosts(posts.filter(post => post.id !== id));
+            }
+        } catch (error) {
+            console.error('Error deleting post:', error);
+        }
     };
 
     // Function to delete a user
-    const deleteUser = async (id: number) => {
-        await axios.delete(`/admin/users/${id}`);
-        setUsers(users.filter(user => user.id !== id));
+    const handleDeleteUser = async (id: number) => {
+        try {
+            await deleteUserById(id);
+            if (users) {
+                setUsers(users.filter(user => user.id !== id));
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+    };
+
+    const handleViewPost = (id: number) => {
+        navigate(`/posts/${id}`); // Navigate to the post details page
     };
 
     return (
-        <div>
-            <h1>Admin Dashboard</h1>
-            
-            <h2>Posts</h2>
-            {posts.map(post => (
-                <div key={post.id}>
-                    <h3>{post.title}</h3>
-                    <button onClick={() => deletePost(post.id)}>Delete Post</button>
-                </div>
-            ))}
+        <Container maxWidth="lg">
+            <Typography variant="h4" gutterBottom align="center">
+                Admin Dashboard
+            </Typography>
 
-            <h2>Users</h2>
-            {users.map(user => (
-                <div key={user.id}>
-                    <h3>{user.name}</h3>
-                    <button onClick={() => deleteUser(user.id)}>Delete User</button>
-                </div>
-            ))}
-        </div>
+            <Grid container spacing={4}>
+                {/* Posts Section */}
+                <Grid item xs={12} md={6}>
+                    <Typography variant="h5" gutterBottom>
+                        Posts
+                    </Typography>
+                    {loadingPosts ? (
+                        <Box display="flex" justifyContent="center">
+                            <CircularProgress />
+                        </Box>
+                    ) : posts && posts.length > 0 ? (
+                        posts.map(post => (
+                            <Card key={post.id} sx={{ marginBottom: 2 }}>
+                                <CardContent>
+                                    <Typography variant="h6">{post.title}</Typography>
+                                    <Typography variant="body2" color="text.secondary" paragraph>
+                                        {post.description}
+                                    </Typography>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        startIcon={<DeleteIcon />}
+                                        onClick={() => handleDeletePost(post.id)}
+                                    >
+                                        Delete Post
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => handleViewPost(post.id)} // Navigate to the post details page
+                                    >
+                                        View Post
+                                    </Button>
+                                </CardContent>
+                            </Card>
+                        ))
+                    ) : (
+                        <Typography variant="body2" color="text.secondary">
+                            No posts available
+                        </Typography>
+                    )}
+                </Grid>
+
+                {/* Users Section */}
+                <Grid item xs={12} md={6}>
+                    <Typography variant="h5" gutterBottom>
+                        Users
+                    </Typography>
+                    {loadingUsers ? (
+                        <Box display="flex" justifyContent="center">
+                            <CircularProgress />
+                        </Box>
+                    ) : users && users.length > 0 ? (
+                        users.map(user => (
+                            <Card key={user.id} sx={{ marginBottom: 2 }}>
+                                <CardContent>
+                                    <Typography variant="h6">{user.name}</Typography>
+                                    <Typography variant="body2" color="text.secondary" paragraph>
+                                        {user.email}
+                                    </Typography>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        startIcon={<DeleteIcon />}
+                                        onClick={() => handleDeleteUser(user.id)}
+                                    >
+                                        Delete User
+                                    </Button>
+                                </CardContent>
+                            </Card>
+                        ))
+                    ) : (
+                        <Typography variant="body2" color="text.secondary">
+                            No users available
+                        </Typography>
+                    )}
+                </Grid>
+            </Grid>
+        </Container>
     );
 };
 
-// Exporting to ensure this file is treated as a module
 export default AdminDashboard;

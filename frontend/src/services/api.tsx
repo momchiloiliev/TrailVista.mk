@@ -199,3 +199,49 @@ export const postMedia = async (postId: number, formData: FormData) =>{
     console.error('Error uploading media:', error);
   }
 }
+
+// Admin-related API functions
+
+// Fetch all posts
+export const getPosts = async () => {
+  try {
+    const response = await api.get('/api/admin/posts');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    throw error;
+  }
+};
+
+// Fetch all users
+export const getUsers = async () => {
+  try {
+    const response = await api.get('/api/admin/users');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error;
+  }
+};
+
+// Delete a post by ID
+export const deletePostById = async (id: number) => {
+  try {
+    const response = await api.delete(`/api/admin/posts/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    throw error;
+  }
+};
+
+// Delete a user by ID
+export const deleteUserById = async (id: number) => {
+  try {
+    const response = await api.delete(`/api/admin/users/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    throw error;
+  }
+};
