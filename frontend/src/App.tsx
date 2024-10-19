@@ -10,6 +10,7 @@ import Profile from './pages/profile-page/Profile';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Details from './pages/details-page/Details';
 import Sidebar from './components/sidebar/Sidebar';
+import AdminDashboard from './pages/admin-dashboard/AdminDashboard';
 
 // import {RoutePage} from "./pages/route-page/RoutePage";
 // import TransportCard from "./pages/transport-card-page/TransportCard";
@@ -18,12 +19,15 @@ const App: React.FC = () => {
     return (
             <Router>
                 <Routes>
+                <Route path="admin" element={<AdminDashboard/>}/>
+
                     <Route path="/" element={<MainLayout/>}>
                         <Route index element={<Home/>}/>
                         <Route path="browse-trails" element={<BrowseTrails/>}/>
                         <Route path="trail-planner" element={<TrailPlanner/>}/>
                         <Route path="profile" element={<Profile/>}/>
                         <Route path="posts/:id" element={<Details/>}/>
+                        {/* <Route path="admin" element={<AdminDashboard/>}/> */}
                         <Route path="/" element={<Sidebar onTrailSelect={(id) => {}} />} />
                         {/* <Route path="trail-planner" element={<TrailPlanner/>}/> */}
                         <Route path="profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>

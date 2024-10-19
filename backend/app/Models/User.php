@@ -62,4 +62,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'favorites', 'post_id', 'user_id')->withTimestamps();
     }
+
+    public function isAdmin()
+    {
+        return $this->isAdmin;  // Adjust according to your database schema
+    }
     }
